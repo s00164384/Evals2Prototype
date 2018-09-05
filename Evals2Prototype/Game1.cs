@@ -43,12 +43,14 @@ namespace Evals2Prototype
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-            AnimatedSprite testFloor = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(-200, 250), "floor",Content.Load<Texture2D>("Sprites/atago"));
-            AnimatedSprite testFloor2 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(300, 250), "floor", Content.Load<Texture2D>("Sprites/atago"));
+            AnimatedSprite testFloor = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(-200, 250), "floor",Content.Load<Texture2D>("Sprites/hitbox"));
+            AnimatedSprite testFloor2 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(300, 250), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
+            AnimatedSprite testFloor3 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(500, 100), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
             List<AnimatedSprite> floor = new List<AnimatedSprite>();
             floor.Add(testFloor);
             floor.Add(testFloor2);
-            testSprite = new Player(this,Content.Load<Texture2D>("Sprites/tager"), new Vector2(0, 0), Content.Load<Texture2D>("Sprites/atago"),floor);
+            floor.Add(testFloor3);
+            testSprite = new Player(this,Content.Load<Texture2D>("Sprites/tager"), new Vector2(0, 0), Content.Load<Texture2D>("Sprites/hitbox"),floor);
             
 
             // TODO: use this.Content to load your game content here

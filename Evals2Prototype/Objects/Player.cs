@@ -11,11 +11,16 @@ namespace Evals2Prototype.Objects
 {
     class Player :AnimatedSprite
     {
+        enum _moveStates { UP,DOWN,LEFT,RIGHT,STOP };
+        int _moveState;
+
         Vector2 movement;
         bool grounded;
-        bool onSide;
+        string _dir;
         Vector2 oldPosition;
         List<AnimatedSprite> floors;
+
+        
         public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<AnimatedSprite> f) : base(g,tx,pos,"player",bounds)
         {
             floors = f;
@@ -25,20 +30,24 @@ namespace Evals2Prototype.Objects
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
+            movement = Vector2.Zero;
             bool jump = false;
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) && !onSide)
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                movement.X += -1;
+                movement.X += -5;
+                _moveState = (int)_moveStates.LEFT;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) && !onSide)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                movement.X += 1;
+                movement.X += 5;
+                _moveState = (int)_moveStates.RIGHT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
             {
                 movement.Y -= 10;
                 grounded = false;
-                jump = true;
+
+                _moveState = (int)_moveStates.UP;
             }
 
             if (movement.X > 5)
@@ -48,40 +57,73 @@ namespace Evals2Prototype.Objects
 
             if (movement.Y < -15)
                 movement.Y = -15;
-        
+
+            if (!grounded)
+                movement.Y += 1f;
+            if (movement.Y > 0)
+            {
+                _moveState = (int)_moveStates.DOWN;
+            }
 
 
 
 
 
             if (movement.X > 0)
+            {
+                _dir = "right";
                 movement.X -= 0.2f;
+            }
             if (movement.X < 0)
+            {
+                _dir = "left";
                 movement.X += 0.2f;
+            }
 
-            if(!grounded)
-                movement.Y += .5f;
+            if(movement.X <= 0.2f && movement.X >= -0.2f)
+            {
+                movement.X = 0;
+            }
+            
 
-            Rectangle predictiveMovementX = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y, Image.Width, Image.Height);
-            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y + (int)movement.Y, Image.Width, Image.Height);
+
+
+
+            
+            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y - 1, Image.Width, Image.Height);
 
             foreach (AnimatedSprite a in floors)
             {
-                if (predictiveMovementY.Intersects(a.BoundingBox))
+
+                if (BoundingBox.Intersects(a.BoundingBox))
                 {
-                    Position.Y = oldPosition.Y;
-                    movement.Y = 0;
-                    grounded = true;
+                    switch (_moveState)
+                    {
+                        case (int)_moveStates.DOWN:
+                            Position.Y = oldPosition.Y  - 0.5f;
+                            movement = Vector2.Zero;
+                            grounded = true;
+                            break;
+                        case (int)_moveStates.UP:
+                            Position.Y = oldPosition.Y + 0.5f;
+                            movement = Vector2.Zero;
+                            break;
+                        case (int)_moveStates.LEFT:
+                            Position.X = oldPosition.X + 0.5f;
+                            movement = Vector2.Zero;
+                            break;
+                        case (int)_moveStates.RIGHT:
+                            Position.X = oldPosition.X - 0.5f;
+                            movement = Vector2.Zero;
+                            break;
+
+
+                    }
                 }
-                if(predictiveMovementX.Intersects(a.BoundingBox))
-                {
-                    Position.X = oldPosition.X;
-                    movement.X = 0;
-                }
-                else
-                {
-                    grounded = false;
-                }
+                
+                    
+                   
+
             }
 
             Move(movement);
