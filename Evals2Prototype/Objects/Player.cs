@@ -15,7 +15,9 @@ namespace Evals2Prototype.Objects
         int _moveState;
 
         Vector2 movement;
+        
         bool grounded;
+        float gravity = 0f;
         string _dir;
         Vector2 oldPosition;
         List<AnimatedSprite> floors;
@@ -30,7 +32,7 @@ namespace Evals2Prototype.Objects
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
-            movement = Vector2.Zero;
+           
             bool jump = false;
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
@@ -60,6 +62,8 @@ namespace Evals2Prototype.Objects
 
             if (!grounded)
                 movement.Y += 1f;
+              
+
             if (movement.Y > 0)
             {
                 _moveState = (int)_moveStates.DOWN;
@@ -90,7 +94,7 @@ namespace Evals2Prototype.Objects
 
 
             
-            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y - 1, Image.Width, Image.Height);
+            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y , Image.Width, Image.Height);
 
             foreach (AnimatedSprite a in floors)
             {
@@ -100,28 +104,39 @@ namespace Evals2Prototype.Objects
                     switch (_moveState)
                     {
                         case (int)_moveStates.DOWN:
-                            Position.Y = oldPosition.Y  - 0.5f;
+                            Position.Y = oldPosition.Y - movement.Y;
+                            gravity = 0f;
                             movement = Vector2.Zero;
                             grounded = true;
                             break;
-                        case (int)_moveStates.UP:
-                            Position.Y = oldPosition.Y + 0.5f;
-                            movement = Vector2.Zero;
-                            break;
+                        //case (int)_moveStates.UP:
+                        //    Position.Y = oldPosition.Y;
+                        //    movement = Vector2.Zero;
+                        //    break;
                         case (int)_moveStates.LEFT:
-                            Position.X = oldPosition.X + 0.5f;
+                            Position.X = oldPosition.X + movement.X;
                             movement = Vector2.Zero;
                             break;
                         case (int)_moveStates.RIGHT:
-                            Position.X = oldPosition.X - 0.5f;
+                            Position.X = oldPosition.X - movement.X;
                             movement = Vector2.Zero;
                             break;
 
 
                     }
+                    InCollision = Color.Green;
+                    break;
+                }
+                else
+                {
+                    InCollision = Color.Red;
                 }
                 
-                    
+                if(grounded)
+                {
+                    InCollision = Color.Blue;
+                }
+             
                    
 
             }

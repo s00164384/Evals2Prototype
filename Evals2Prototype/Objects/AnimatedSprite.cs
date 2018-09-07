@@ -20,7 +20,7 @@ namespace Evals2Prototype.Objects
         public SpriteBatch Sb;
         float speed;
         public string tag;
-        public bool InCollision = false;
+        public Color InCollision = Color.White;
         public AnimatedSprite collidingWith;
         Vector2 movement = new Vector2(0, 0);
 
@@ -60,13 +60,13 @@ namespace Evals2Prototype.Objects
             Rectangle OtherBox = new Rectangle((int)other.Position.X, (int)other.Position.Y, other.Image.Width, other.Image.Height);
             if (BoundingBox.Intersects(OtherBox))
             {
-                InCollision = true;
+                InCollision = Color.Green;
                 collidingWith = other;
                 return true;
             }
             else
             {
-                InCollision = false;
+                InCollision = Color.White;
                 collidingWith = null;
                 return false;
             }
@@ -83,7 +83,7 @@ namespace Evals2Prototype.Objects
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate);
             Sb.Draw(Image, Position, Color.White);
-            Sb.Draw(boundtx, BoundingBox, Color.White);
+            Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
             // TODO: Add your drawing code here
 
