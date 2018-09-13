@@ -44,7 +44,7 @@ namespace Evals2Prototype.Objects
             bool jump = false;
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                movement.X += -5;
+                movement.X += -10;
                 _moveState = (int)_moveStates.LEFT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
@@ -54,7 +54,7 @@ namespace Evals2Prototype.Objects
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
             {
-                movement.Y -= 10;
+                movement.Y -= 20;
                 grounded = false;
 
                 _moveState = (int)_moveStates.UP;
@@ -65,8 +65,7 @@ namespace Evals2Prototype.Objects
             if (movement.X < -5)
                 movement.X = -5;
 
-            if (movement.Y < -15)
-                movement.Y = -15;
+
 
             if (!grounded)
                 movement.Y += 1f;
@@ -172,17 +171,10 @@ namespace Evals2Prototype.Objects
                 #region leftCollision
                 if (BoundingBoxLeft.Intersects(a.BoundingBox))
                 {
-                    switch (_moveState)
-                    {
-                        case (int)_moveStates.LEFT:
 
-                            Position.X = a.BoundingBox.Right + Image.Width +1f;
+                            Position.X = a.BoundingBox.Right +1f;
                             gravity = 0f;
                             movement.X = 0f;
-                            grounded = true;
-                            break;
-
-                    }
                     InLeft = Color.Green;
                     break;
                 }
