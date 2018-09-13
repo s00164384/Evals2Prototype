@@ -12,11 +12,11 @@ namespace Evals2Prototype.Objects
     public class AnimatedSprite : DrawableGameComponent
     {
         public Texture2D Image;
-        Texture2D boundtx;
+        public Texture2D boundtx;
         public Rectangle BoundingBox;
         public Vector2 oldPosition;
         public Vector2 Position;
-        Game game;
+        public Game game;
         public SpriteBatch Sb;
         float speed;
         public string tag;
@@ -83,7 +83,7 @@ namespace Evals2Prototype.Objects
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate);
             Sb.Draw(Image, Position, Color.White);
-            Sb.Draw(boundtx, BoundingBox, InCollision);
+            //Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
             // TODO: Add your drawing code here
 
