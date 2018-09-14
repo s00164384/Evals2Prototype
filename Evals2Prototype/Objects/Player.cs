@@ -22,7 +22,15 @@ namespace Evals2Prototype.Objects
         Vector2 oldPosition;
         List<AnimatedSprite> floors;
 
-        
+        Rectangle BoundingBoxBot;
+        Rectangle BoundingBoxLeft;
+        Rectangle BoundingBoxRight;
+        Rectangle BoundingBoxTop;
+
+        Color InRight = Color.Red;
+        Color InLeft = Color.Red;
+
+
         public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<AnimatedSprite> f) : base(g,tx,pos,"player",bounds)
         {
             floors = f;
@@ -36,38 +44,38 @@ namespace Evals2Prototype.Objects
             bool jump = false;
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                movement.X += -5;
+                movement.X += -2;
                 _moveState = (int)_moveStates.LEFT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                movement.X += 5;
+                movement.X += 2;
                 _moveState = (int)_moveStates.RIGHT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
             {
-                movement.Y -= 10;
+                movement.Y -= 20;
                 grounded = false;
 
                 _moveState = (int)_moveStates.UP;
             }
 
-            if (movement.X > 5)
-                movement.X = 5;
-            if (movement.X < -5)
-                movement.X = -5;
+            if (movement.X > 8)
+                movement.X = 8;
+            if (movement.X < -8)
+                movement.X = -8;
 
-            if (movement.Y < -15)
-                movement.Y = -15;
+
 
             if (!grounded)
                 movement.Y += 1f;
-              
+
 
             if (movement.Y > 0)
             {
                 _moveState = (int)_moveStates.DOWN;
             }
+
 
 
 
@@ -88,63 +96,136 @@ namespace Evals2Prototype.Objects
             {
                 movement.X = 0;
             }
+
+
+
+
+            bool stillGrounded = false;
             
-
-
-
-
-            
-            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y , Image.Width, Image.Height);
+            BoundingBoxBot = new Rectangle((int)Position.X + 64/4 + (int)movement.X, (int)Position.Y + 64 - 2 + (int)movement.Y, 64/2, 2);
+            Rectangle BoundingBoxBot2 = new Rectangle((int)Position.X + 64 / 4 + (int)movement.X, (int)Position.Y + 64 + 2 + (int)movement.Y, 64 / 2, 2);
+            BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + 64 / 4 + (int)movement.Y, 2, 64 / 2);
+            BoundingBoxRight = new Rectangle((int)Position.X + 64 + (int)movement.X, (int)Position.Y + 64/4 + (int)movement.Y, 2, 64/2);
+            BoundingBoxTop = new Rectangle((int)Position.X + 64 / 4 + (int)movement.X, (int)Position.Y + (int)movement.Y, 64 / 2, 2);
 
             foreach (AnimatedSprite a in floors)
             {
-
-                if (BoundingBox.Intersects(a.BoundingBox))
-                {
-                    switch (_moveState)
-                    {
-                        case (int)_moveStates.DOWN:
-                            Position.Y = oldPosition.Y - movement.Y;
+                #region movement
+                #region floorCollision
+                if (BoundingBoxBot.Intersects(a.BoundingBox))
+                {           
+                            Position.Y = a.BoundingBox.Y - 64 - 1f;
                             gravity = 0f;
                             movement = Vector2.Zero;
                             grounded = true;
-                            break;
-                        //case (int)_moveStates.UP:
-                        //    Position.Y = oldPosition.Y;
-                        //    movement = Vector2.Zero;
-                        //    break;
-                        case (int)_moveStates.LEFT:
-                            Position.X = oldPosition.X + movement.X;
-                            movement = Vector2.Zero;
-                            break;
-                        case (int)_moveStates.RIGHT:
-                            Position.X = oldPosition.X - movement.X;
-                            movement = Vector2.Zero;
-                            break;
 
-
-                    }
                     InCollision = Color.Green;
+                    break;
+                }
+                //else
+                //{
+                //    if (Position.Y != a.BoundingBox.Y - 64 - 1f)
+                //    {
+                //        grounded = false;
+                //        InCollision = Color.Red;
+                //    }
+                //    else
+                //    {
+                //        if(movement.Y > 0)
+                //        movement.Y = 0f;
+                //        grounded = true;
+                        
+                //    }
+                //}
+                #endregion
+                #region rightCollision
+                if (BoundingBoxRight.Intersects(a.BoundingBox))
+                {
+
+                            Position.X = a.BoundingBox.X - 64 - 2f;
+                            movement.X = 0f;
+                    InRight = Color.Green;
+                    break;
+                    
+                }
+                else
+                {
+                    InRight = Color.Red;
+                }
+                //else
+                //{
+                //    if (Position.X != a.BoundingBox.X - 64 - 1f)
+                //    {
+                //        grounded = false;
+                //        InCollision = Color.Red;
+                //    }
+                //    else
+                //    {
+                //        if (movement.Y > 0)
+                //            movement.Y = 0f;
+                //        grounded = true;
+                //        break;
+                //    }
+                //}
+                #endregion
+                #region leftCollision
+                if (BoundingBoxLeft.Intersects(a.BoundingBox))
+                {
+
+                            Position.X = a.BoundingBox.Right +1f;
+                            gravity = 0f;
+                            movement.X = 0f;
+                    InLeft = Color.Green;
                     break;
                 }
                 else
                 {
-                    InCollision = Color.Red;
+                    InLeft = Color.Red;
                 }
-                
-                if(grounded)
+                //else
+                //{
+                //    if (Position.Y != a.BoundingBox.Y - 64 - 1f)
+                //    {
+                //        grounded = false;
+                //        InCollision = Color.Red;
+                //    }
+                //    else
+                //    {
+                //        if (movement.Y > 0)
+                //            movement.Y = 0f;
+                //        grounded = true;
+                //        break;
+                //    }
+                //}
+                #endregion
+
+
+                if (grounded)
                 {
                     InCollision = Color.Blue;
                 }
-             
-                   
+                #endregion
+
+                //if (!BoundingBoxBot2.Intersects(a.BoundingBox) && InRight == Color.Red && InLeft == Color.Red)
+                //    grounded = false;
 
             }
+            foreach (AnimatedSprite a in floors)
+            {
+                if(BoundingBoxBot2.Intersects(a.BoundingBox))
+                {
+                    stillGrounded = true;
+                }
+            }
 
-            Move(movement);
+            if(!stillGrounded)
+            {
+                grounded = false;
+            }
+                Move(movement);
 
 
-            //Position.Y = collidingWith.BoundingBox.Top - (Image.Height); 
+            //Position.Y = collidingWith.BoundingBox.Top - (64); 
             //}
             //else
             //{
@@ -158,6 +239,18 @@ namespace Evals2Prototype.Objects
             base.Update(gameTime);
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+            if (Sb == null) return;
+            Sb.Begin(SpriteSortMode.Immediate);
+            Sb.Draw(boundtx, BoundingBoxBot, InCollision);
+            Sb.Draw(boundtx, BoundingBoxLeft, InLeft);
+            Sb.Draw(boundtx, BoundingBoxRight, InRight);
+            Sb.Draw(boundtx, BoundingBoxTop, InCollision);
+            Sb.End();
+            base.Draw(gameTime);
+        }
 
     }
 }
