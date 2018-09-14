@@ -44,7 +44,6 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Objects\AnimatedSprite.cs" />
     <Compile Include="Objects\Player.cs" />
-    <Compile Include="Objects\QuadTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
