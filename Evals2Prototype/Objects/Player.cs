@@ -44,12 +44,12 @@ namespace Evals2Prototype.Objects
             bool jump = false;
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                movement.X += -10;
+                movement.X += -2;
                 _moveState = (int)_moveStates.LEFT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                movement.X += 5;
+                movement.X += 2;
                 _moveState = (int)_moveStates.RIGHT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
@@ -60,10 +60,10 @@ namespace Evals2Prototype.Objects
                 _moveState = (int)_moveStates.UP;
             }
 
-            if (movement.X > 5)
-                movement.X = 5;
-            if (movement.X < -5)
-                movement.X = -5;
+            if (movement.X > 8)
+                movement.X = 8;
+            if (movement.X < -8)
+                movement.X = -8;
 
 
 
@@ -96,17 +96,17 @@ namespace Evals2Prototype.Objects
             {
                 movement.X = 0;
             }
+
+
+
+
+            bool stillGrounded = false;
             
-
-
-
-
-            
-            BoundingBoxBot = new Rectangle((int)Position.X + Image.Width/4 + (int)movement.X, (int)Position.Y + Image.Height - 2 + (int)movement.Y, Image.Width/2, 2);
-            Rectangle BoundingBoxBot2 = new Rectangle((int)Position.X + Image.Width / 4 + (int)movement.X, (int)Position.Y + Image.Height + 2 + (int)movement.Y, Image.Width / 2, 2);
-            BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + Image.Height / 4 + (int)movement.Y, 2, Image.Height / 2);
-            BoundingBoxRight = new Rectangle((int)Position.X + Image.Width + (int)movement.X, (int)Position.Y + Image.Height/4 + (int)movement.Y, 2, Image.Height/2);
-            BoundingBoxTop = new Rectangle((int)Position.X + Image.Width / 4 + (int)movement.X, (int)Position.Y + (int)movement.Y, Image.Width / 2, 2);
+            BoundingBoxBot = new Rectangle((int)Position.X + 64/4 + (int)movement.X, (int)Position.Y + 64 - 2 + (int)movement.Y, 64/2, 2);
+            Rectangle BoundingBoxBot2 = new Rectangle((int)Position.X + 64 / 4 + (int)movement.X, (int)Position.Y + 64 + 2 + (int)movement.Y, 64 / 2, 2);
+            BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + 64 / 4 + (int)movement.Y, 2, 64 / 2);
+            BoundingBoxRight = new Rectangle((int)Position.X + 64 + (int)movement.X, (int)Position.Y + 64/4 + (int)movement.Y, 2, 64/2);
+            BoundingBoxTop = new Rectangle((int)Position.X + 64 / 4 + (int)movement.X, (int)Position.Y + (int)movement.Y, 64 / 2, 2);
 
             foreach (AnimatedSprite a in floors)
             {
@@ -114,7 +114,7 @@ namespace Evals2Prototype.Objects
                 #region floorCollision
                 if (BoundingBoxBot.Intersects(a.BoundingBox))
                 {           
-                            Position.Y = a.BoundingBox.Y - Image.Height - 1f;
+                            Position.Y = a.BoundingBox.Y - 64 - 1f;
                             gravity = 0f;
                             movement = Vector2.Zero;
                             grounded = true;
@@ -124,7 +124,7 @@ namespace Evals2Prototype.Objects
                 }
                 //else
                 //{
-                //    if (Position.Y != a.BoundingBox.Y - Image.Height - 1f)
+                //    if (Position.Y != a.BoundingBox.Y - 64 - 1f)
                 //    {
                 //        grounded = false;
                 //        InCollision = Color.Red;
@@ -142,7 +142,7 @@ namespace Evals2Prototype.Objects
                 if (BoundingBoxRight.Intersects(a.BoundingBox))
                 {
 
-                            Position.X = a.BoundingBox.X - Image.Width - 2f;
+                            Position.X = a.BoundingBox.X - 64 - 2f;
                             movement.X = 0f;
                     InRight = Color.Green;
                     break;
@@ -154,7 +154,7 @@ namespace Evals2Prototype.Objects
                 }
                 //else
                 //{
-                //    if (Position.X != a.BoundingBox.X - Image.Width - 1f)
+                //    if (Position.X != a.BoundingBox.X - 64 - 1f)
                 //    {
                 //        grounded = false;
                 //        InCollision = Color.Red;
@@ -184,7 +184,7 @@ namespace Evals2Prototype.Objects
                 }
                 //else
                 //{
-                //    if (Position.Y != a.BoundingBox.Y - Image.Height - 1f)
+                //    if (Position.Y != a.BoundingBox.Y - 64 - 1f)
                 //    {
                 //        grounded = false;
                 //        InCollision = Color.Red;
@@ -210,11 +210,22 @@ namespace Evals2Prototype.Objects
                 //    grounded = false;
 
             }
+            foreach (AnimatedSprite a in floors)
+            {
+                if(BoundingBoxBot2.Intersects(a.BoundingBox))
+                {
+                    stillGrounded = true;
+                }
+            }
 
-            Move(movement);
+            if(!stillGrounded)
+            {
+                grounded = false;
+            }
+                Move(movement);
 
 
-            //Position.Y = collidingWith.BoundingBox.Top - (Image.Height); 
+            //Position.Y = collidingWith.BoundingBox.Top - (64); 
             //}
             //else
             //{

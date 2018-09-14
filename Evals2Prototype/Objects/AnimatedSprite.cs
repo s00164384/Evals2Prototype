@@ -39,16 +39,17 @@ namespace Evals2Prototype.Objects
             boundtx = bounds;
             Image = tx;
             Position = new Vector2(pos.X,pos.Y);
-            BoundingBox = new Rectangle((int)this.Position.X,(int)this.Position.Y,Image.Width,Image.Height);
+            BoundingBox = new Rectangle((int)this.Position.X,(int)this.Position.Y,64,64);
             speed = 5;
             g.Components.Add(this);
+            
 
         }
 
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Image.Width, Image.Height);
+            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, 64, 64);
 
 
             base.Update(gameTime);
@@ -56,7 +57,7 @@ namespace Evals2Prototype.Objects
 
         public bool Collision(AnimatedSprite other)
         {
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Image.Width, Image.Height);
+            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, 64, 64);
             Rectangle OtherBox = new Rectangle((int)other.Position.X, (int)other.Position.Y, other.Image.Width, other.Image.Height);
             if (BoundingBox.Intersects(OtherBox))
             {
@@ -82,7 +83,7 @@ namespace Evals2Prototype.Objects
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate);
-            Sb.Draw(Image, Position, Color.White);
+            Sb.Draw(Image, BoundingBox, Color.White);
             //Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
             // TODO: Add your drawing code here
