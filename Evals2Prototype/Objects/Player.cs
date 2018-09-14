@@ -60,11 +60,11 @@ namespace Evals2Prototype.Objects
             if (movement.Y < -15)
                 movement.Y = -15;
 
-            if (!grounded)
+            if(!grounded)
                 movement.Y += 1f;
               
 
-            if (movement.Y > 0)
+            if (movement.Y > 0 && !grounded)
             {
                 _moveState = (int)_moveStates.DOWN;
             }
@@ -88,13 +88,13 @@ namespace Evals2Prototype.Objects
             {
                 movement.X = 0;
             }
+
+
+
+
+            bool stillGrounded = false;
             
-
-
-
-
-            
-            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y , Image.Width, Image.Height);
+            Rectangle predictiveMovementY = new Rectangle((int)Position.X, (int)Position.Y, Image.Width, Image.Height + 1);
 
             foreach (AnimatedSprite a in floors)
             {
@@ -130,9 +130,15 @@ namespace Evals2Prototype.Objects
                 else
                 {
                     InCollision = Color.Red;
+                    
                 }
+
+       
+
                 
-                if(grounded)
+
+
+                if (grounded)
                 {
                     InCollision = Color.Blue;
                 }
@@ -140,6 +146,7 @@ namespace Evals2Prototype.Objects
                    
 
             }
+
 
             Move(movement);
 

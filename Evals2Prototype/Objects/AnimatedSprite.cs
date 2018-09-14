@@ -13,7 +13,13 @@ namespace Evals2Prototype.Objects
     {
         public Texture2D Image;
         Texture2D boundtx;
-        public Rectangle BoundingBox;
+        public Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)this.Position.X, (int)this.Position.Y, Image.Width, Image.Height);
+            }
+        }
         public Vector2 oldPosition;
         public Vector2 Position;
         Game game;
@@ -39,7 +45,6 @@ namespace Evals2Prototype.Objects
             boundtx = bounds;
             Image = tx;
             Position = new Vector2(pos.X,pos.Y);
-            BoundingBox = new Rectangle((int)this.Position.X,(int)this.Position.Y,Image.Width,Image.Height);
             speed = 5;
             g.Components.Add(this);
 
@@ -48,7 +53,7 @@ namespace Evals2Prototype.Objects
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Image.Width, Image.Height);
+
 
 
             base.Update(gameTime);
@@ -56,7 +61,6 @@ namespace Evals2Prototype.Objects
 
         public bool Collision(AnimatedSprite other)
         {
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, Image.Width, Image.Height);
             Rectangle OtherBox = new Rectangle((int)other.Position.X, (int)other.Position.Y, other.Image.Width, other.Image.Height);
             if (BoundingBox.Intersects(OtherBox))
             {
