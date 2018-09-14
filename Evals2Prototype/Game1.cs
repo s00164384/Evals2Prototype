@@ -19,6 +19,7 @@ namespace Evals2Prototype
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
         }
@@ -45,20 +46,20 @@ namespace Evals2Prototype
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-            AnimatedSprite testFloor = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 0), "floor",Content.Load<Texture2D>("Sprites/hitbox"));
-            AnimatedSprite testFloor4 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(364, 250), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
-            AnimatedSprite testFloor5 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(428, 250), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
-            AnimatedSprite testFloor6 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(236, 250), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
-            AnimatedSprite testFloor2 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(300, 250), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
-            AnimatedSprite testFloor3 = new AnimatedSprite(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(500, 100), "floor", Content.Load<Texture2D>("Sprites/hitbox"));
-            List<AnimatedSprite> floor = new List<AnimatedSprite>();
-            floor.Add(testFloor);
-            floor.Add(testFloor2);
-            floor.Add(testFloor3);
-            floor.Add(testFloor4);
-            floor.Add(testFloor5);
-            floor.Add(testFloor6);
-            testSprite = new Player(this,Content.Load<Texture2D>("Sprites/tager"), new Vector2(0, 0), Content.Load<Texture2D>("Sprites/hitbox"),floor);
+            List<Wall> floor = new List<Wall>
+            {
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32)),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32))
+
+
+            };
+            testSprite = new Player(this,Content.Load<Texture2D>("Sprites/tager"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"),floor,new Vector2(64,64));
             
 
             // TODO: use this.Content to load your game content here

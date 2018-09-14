@@ -20,7 +20,7 @@ namespace Evals2Prototype.Objects
         float gravity = 0f;
         string _dir;
         Vector2 oldPosition;
-        List<AnimatedSprite> floors;
+        List<Wall> floors;
 
         Rectangle BoundingBoxBot;
         Rectangle BoundingBoxLeft;
@@ -31,7 +31,7 @@ namespace Evals2Prototype.Objects
         Color InLeft = Color.Red;
 
 
-        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<AnimatedSprite> f) : base(g,tx,pos,"player",bounds)
+        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen) : base(g,tx,pos,"player",bounds,dimen)
         {
             floors = f;
             grounded = false;
@@ -44,12 +44,20 @@ namespace Evals2Prototype.Objects
             bool jump = false;
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                movement.X += -2;
+                movement.X += -1;
+                if(movement.X > 0)
+                {
+                  movement.X += -1;
+                }
                 _moveState = (int)_moveStates.LEFT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                movement.X += 2;
+                movement.X += 1;
+                if (movement.X < 0)
+                {
+                    movement.X += 1;
+                }
                 _moveState = (int)_moveStates.RIGHT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
@@ -92,7 +100,7 @@ namespace Evals2Prototype.Objects
                 movement.X += 0.2f;
             }
 
-            if(movement.X <= 0.2f && movement.X >= -0.2f)
+            if (movement.X <= 0.2f && movement.X >= -0.2f)
             {
                 movement.X = 0;
             }
@@ -102,11 +110,11 @@ namespace Evals2Prototype.Objects
 
             bool stillGrounded = false;
             
-            BoundingBoxBot = new Rectangle((int)Position.X + 64/4 + (int)movement.X, (int)Position.Y + 64 - 2 + (int)movement.Y, 64/2, 2);
-            Rectangle BoundingBoxBot2 = new Rectangle((int)Position.X + 64 / 4 + (int)movement.X, (int)Position.Y + 64 + 2 + (int)movement.Y, 64 / 2, 2);
-            BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + 64 / 4 + (int)movement.Y, 2, 64 / 2);
-            BoundingBoxRight = new Rectangle((int)Position.X + 64 + (int)movement.X, (int)Position.Y + 64/4 + (int)movement.Y, 2, 64/2);
-            BoundingBoxTop = new Rectangle((int)Position.X + 64 / 4 + (int)movement.X, (int)Position.Y + (int)movement.Y, 64 / 2, 2);
+            BoundingBoxBot = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y - 2 + (int)movement.Y, ((int)Dimensions.Y/3) *2, 2);
+            Rectangle BoundingBoxBot2 = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y + 2 + (int)movement.Y, ((int)Dimensions.X/3)*2, 2);
+            BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y / 4 + (int)movement.Y, 2, (int)Dimensions.Y / 2);
+            BoundingBoxRight = new Rectangle((int)Position.X + (int)Dimensions.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y/4 + (int)movement.Y, 2, (int)Dimensions.Y/2);
+            BoundingBoxTop = new Rectangle((int)Position.X + (int)Dimensions.X / 3 + (int)movement.X, (int)Position.Y + (int)movement.Y, (int)Dimensions.Y / 3, 2);
 
             foreach (AnimatedSprite a in floors)
             {
@@ -116,7 +124,7 @@ namespace Evals2Prototype.Objects
                 {           
                             Position.Y = a.BoundingBox.Y - 64 - 1f;
                             gravity = 0f;
-                            movement = Vector2.Zero;
+                    movement.Y = 0;
                             grounded = true;
 
                     InCollision = Color.Green;
@@ -198,7 +206,16 @@ namespace Evals2Prototype.Objects
                 //    }
                 //}
                 #endregion
+                if (BoundingBoxTop.Intersects(a.BoundingBox))
+                {
+                    Position.Y = a.BoundingBox.Bottom + 1f;
 
+                    movement.Y = 0;
+                    grounded = true;
+
+                    InCollision = Color.Green;
+                    break;
+                }
 
                 if (grounded)
                 {
@@ -210,7 +227,7 @@ namespace Evals2Prototype.Objects
                 //    grounded = false;
 
             }
-            foreach (AnimatedSprite a in floors)
+            foreach (Wall a in floors)
             {
                 if(BoundingBoxBot2.Intersects(a.BoundingBox))
                 {

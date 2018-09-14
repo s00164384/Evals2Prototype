@@ -16,6 +16,7 @@ namespace Evals2Prototype.Objects
         public Rectangle BoundingBox;
         public Vector2 oldPosition;
         public Vector2 Position;
+        public Vector2 Dimensions;
         public Game game;
         public SpriteBatch Sb;
         float speed;
@@ -31,7 +32,7 @@ namespace Evals2Prototype.Objects
         float timer = 0f;
         Rectangle sourceRectangle;
 
-        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds):base(g)
+        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen):base(g)
         {
             game = g;
             Visible = true;
@@ -39,9 +40,10 @@ namespace Evals2Prototype.Objects
             boundtx = bounds;
             Image = tx;
             Position = new Vector2(pos.X,pos.Y);
-            BoundingBox = new Rectangle((int)this.Position.X,(int)this.Position.Y,64,64);
+            BoundingBox = new Rectangle((int)this.Position.X,(int)this.Position.Y,(int)dimen.X,(int)dimen.Y);
             speed = 5;
             g.Components.Add(this);
+            Dimensions = dimen;
             
 
         }
@@ -49,7 +51,7 @@ namespace Evals2Prototype.Objects
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, 64, 64);
+            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
 
 
             base.Update(gameTime);
