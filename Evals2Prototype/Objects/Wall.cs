@@ -13,7 +13,7 @@ namespace Evals2Prototype.Objects
         Vector2 _dimensions;
         Rectangle _bounds;
 
-        public Wall(Game g, Texture2D tx, Vector2 pos, Texture2D boundsTx, Vector2 dimen) : base(g, tx, pos, "wall", boundsTx, dimen)
+        public Wall(Game g, Texture2D tx, Vector2 pos, Texture2D boundsTx, Vector2 dimen,int frames) : base(g, tx, pos, "wall", boundsTx, dimen,frames)
         {
             _dimensions = dimen;
             _bounds = new Rectangle((int)Position.X, (int)Position.Y, (int)_dimensions.X, (int)_dimensions.Y);

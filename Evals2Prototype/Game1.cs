@@ -13,7 +13,7 @@ namespace Evals2Prototype
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        AnimatedSprite testSprite;
+        Texture2D testSprite;
 
         public Game1()
         {
@@ -46,21 +46,23 @@ namespace Evals2Prototype
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
+            testSprite = Content.Load<Texture2D>("Backgrounds/xp");
             List<Wall> floor = new List<Wall>
             {
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32)),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32))
-
-
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1),
+            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1)
             };
-            testSprite = new Player(this,Content.Load<Texture2D>("Sprites/tager"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"),floor,new Vector2(64,64));
-            
+            Player testPlayer = new Player(this,Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"),floor,new Vector2(64,64),4, new Texture2D[] { Content.Load<Texture2D>("Sprites/evals"), Content.Load<Texture2D>("Sprites/evalsRight"), Content.Load<Texture2D>("Sprites/evalsJump"), Content.Load<Texture2D>("Sprites/evalsFall") });
+            Enemy enemyTest = new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(0, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 1, floor, 1);
+            Enemy enemyTest2 = new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(1000, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1);
+            Enemy enemyTest3 = new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(450, 286), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1);
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -96,9 +98,9 @@ namespace Evals2Prototype
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            //spriteBatch.Begin();
-            //spriteBatch.Draw(testSprite.Image, testSprite.Position, Color.White);
-            //spriteBatch.End();
+            spriteBatch.Begin();
+            spriteBatch.Draw(testSprite, graphics.GraphicsDevice.Viewport.Bounds, Color.White);
+            spriteBatch.End();
             // TODO: Add your drawing code here
             // TODO: Add your drawing code here
 

@@ -14,25 +14,28 @@ namespace Evals2Prototype.Objects
         public Texture2D Image;
         public Texture2D boundtx;
         public Rectangle BoundingBox;
+        public Rectangle source;
         public Vector2 oldPosition;
         public Vector2 Position;
         public Vector2 Dimensions;
         public Game game;
         public SpriteBatch Sb;
         float speed;
+        public string _dir;
         public string tag;
         public Color InCollision = Color.White;
         public AnimatedSprite collidingWith;
         Vector2 movement = new Vector2(0, 0);
+        SpriteEffects _effect;
 
         //For animating
-        int Frames = 0;
-        int currentFrame = 0;
+        int Frames = 1;
+        public int currentFrame = 0;
         int timeBetweenFrames = 100;
         float timer = 0f;
         Rectangle sourceRectangle;
 
-        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen):base(g)
+        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen, int framecount):base(g)
         {
             game = g;
             Visible = true;
@@ -42,8 +45,10 @@ namespace Evals2Prototype.Objects
             Position = new Vector2(pos.X,pos.Y);
             BoundingBox = new Rectangle((int)this.Position.X,(int)this.Position.Y,(int)dimen.X,(int)dimen.Y);
             speed = 5;
-            g.Components.Add(this);
             Dimensions = dimen;
+            Frames = framecount; 
+            g.Components.Add(this);
+            
             
 
         }
@@ -51,7 +56,33 @@ namespace Evals2Prototype.Objects
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
+            Frames = Image.Width / (int)Dimensions.X;
+
+            timer += (float)gameTime.ElapsedGameTime.Milliseconds;
+            if(_dir == "left")
+            {
+                _effect = SpriteEffects.FlipHorizontally;
+            }
+            else
+            {
+                _effect = SpriteEffects.None;
+            }
+            //if the timer is greater then the time between frames, then animate
+            if (timer > timeBetweenFrames)
+            {
+                //moce to the next frame
+                currentFrame++;
+
+                //if we have exceed the number of frames
+                if (currentFrame > Frames - 1)
+                {
+                    currentFrame = 0;
+                }
+                //reset our timer
+                timer = 0f;
+            }
             BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
+            source = new Rectangle(currentFrame * (int)Dimensions.X, 0, (int)Dimensions.X, (int)Dimensions.Y);
 
 
             base.Update(gameTime);
@@ -82,10 +113,11 @@ namespace Evals2Prototype.Objects
 
         public override void Draw(GameTime gameTime)
         {
+            if (!Visible) return;
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate);
-            Sb.Draw(Image, BoundingBox, Color.White);
+            Sb.Draw(Image,Position, source, Color.White,0f,Vector2.Zero,1.0f,_effect,0f);
             //Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
             // TODO: Add your drawing code here

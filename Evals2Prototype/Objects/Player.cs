@@ -15,10 +15,10 @@ namespace Evals2Prototype.Objects
         int _moveState;
 
         Vector2 movement;
-        
+        Texture2D[] _States;
         bool grounded;
         float gravity = 0f;
-        string _dir;
+        
         Vector2 oldPosition;
         List<Wall> floors;
 
@@ -31,17 +31,25 @@ namespace Evals2Prototype.Objects
         Color InLeft = Color.Red;
 
 
-        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen) : base(g,tx,pos,"player",bounds,dimen)
+        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen,int frames,Texture2D[] states) : base(g,tx,pos,"player",bounds,dimen,frames)
         {
             floors = f;
             grounded = false;
+            _States = states;
         }
 
         public override void Update(GameTime gameTime)
         {
             oldPosition = Position;
+            int LastState = _moveState;
            
             bool jump = false;
+
+            if (!grounded)
+                movement.Y += 1f;
+            else
+                _moveState = (int)_moveStates.STOP;
+
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 movement.X += -1;
@@ -49,7 +57,8 @@ namespace Evals2Prototype.Objects
                 {
                   movement.X += -1;
                 }
-                _moveState = (int)_moveStates.LEFT;
+                if (grounded)
+                    _moveState = (int)_moveStates.LEFT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -58,6 +67,7 @@ namespace Evals2Prototype.Objects
                 {
                     movement.X += 1;
                 }
+                if(grounded)
                 _moveState = (int)_moveStates.RIGHT;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
@@ -68,15 +78,14 @@ namespace Evals2Prototype.Objects
                 _moveState = (int)_moveStates.UP;
             }
 
-            if (movement.X > 8)
-                movement.X = 8;
-            if (movement.X < -8)
-                movement.X = -8;
+            if (movement.X > 6)
+                movement.X = 6;
+            if (movement.X < -6)
+                movement.X = -6;
 
 
 
-            if (!grounded)
-                movement.Y += 1f;
+
 
 
             if (movement.Y > 0)
@@ -84,8 +93,28 @@ namespace Evals2Prototype.Objects
                 _moveState = (int)_moveStates.DOWN;
             }
 
-
-
+            if (LastState != _moveState)
+            {
+                currentFrame = 0;
+                switch (_moveState)
+                {
+                    case (int)_moveStates.RIGHT:
+                        Image = _States[1];
+                        break;
+                    case (int)_moveStates.LEFT:
+                        Image = _States[1];
+                        break;
+                    case (int)_moveStates.UP:
+                        Image = _States[2];
+                        break;
+                    case (int)_moveStates.DOWN:
+                        Image = _States[3];
+                        break;
+                    default:
+                        Image = _States[0];
+                        break;
+                }
+            }
 
 
 
@@ -115,6 +144,14 @@ namespace Evals2Prototype.Objects
             BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y / 4 + (int)movement.Y, 2, (int)Dimensions.Y / 2);
             BoundingBoxRight = new Rectangle((int)Position.X + (int)Dimensions.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y/4 + (int)movement.Y, 2, (int)Dimensions.Y/2);
             BoundingBoxTop = new Rectangle((int)Position.X + (int)Dimensions.X / 3 + (int)movement.X, (int)Position.Y + (int)movement.Y, (int)Dimensions.Y / 3, 2);
+
+            foreach(AnimatedSprite e in game.Components)
+            {
+                if(BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
+                {
+                    e.Visible = false;
+                }
+            }
 
             foreach (AnimatedSprite a in floors)
             {
@@ -206,6 +243,7 @@ namespace Evals2Prototype.Objects
                 //    }
                 //}
                 #endregion
+                #region ceilingCollision
                 if (BoundingBoxTop.Intersects(a.BoundingBox))
                 {
                     Position.Y = a.BoundingBox.Bottom + 1f;
@@ -216,6 +254,7 @@ namespace Evals2Prototype.Objects
                     InCollision = Color.Green;
                     break;
                 }
+                #endregion
 
                 if (grounded)
                 {
