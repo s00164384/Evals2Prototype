@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Evals2Prototype.Objects
 {
@@ -20,7 +21,12 @@ namespace Evals2Prototype.Objects
         float gravity = 0f;
         
         Vector2 oldPosition;
+        SoundEffect death;
+        SpriteFont HUDtxt;
+        int deaths = 0;
+        Vector2 originPoint;
         List<Wall> floors;
+        List<Enemy> enemies;
 
         Rectangle BoundingBoxBot;
         Rectangle BoundingBoxLeft;
@@ -31,11 +37,16 @@ namespace Evals2Prototype.Objects
         Color InLeft = Color.Red;
 
 
-        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen,int frames,Texture2D[] states) : base(g,tx,pos,"player",bounds,dimen,frames)
+        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen,int frames,Texture2D[] states,List<Enemy> e,SoundEffect oof,SpriteFont sf) : base(g,tx,pos,"player",bounds,dimen,frames)
         {
             floors = f;
             grounded = false;
             _States = states;
+            originPoint = pos;
+            enemies = e;
+            death = oof;
+            HUDtxt = sf;
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -145,13 +156,6 @@ namespace Evals2Prototype.Objects
             BoundingBoxRight = new Rectangle((int)Position.X + (int)Dimensions.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y/4 + (int)movement.Y, 2, (int)Dimensions.Y/2);
             BoundingBoxTop = new Rectangle((int)Position.X + (int)Dimensions.X / 3 + (int)movement.X, (int)Position.Y + (int)movement.Y, (int)Dimensions.Y / 3, 2);
 
-            foreach(AnimatedSprite e in game.Components)
-            {
-                if(BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
-                {
-                    e.Visible = false;
-                }
-            }
 
             foreach (AnimatedSprite a in floors)
             {
@@ -290,6 +294,16 @@ namespace Evals2Prototype.Objects
             //}
 
 
+            foreach (Enemy e in enemies)
+            {
+                if (BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
+                {
+                    movement = Vector2.Zero;
+                    deaths++;
+                    Position = originPoint;
+                    death.Play();
+                }
+            }
 
 
             base.Update(gameTime);
@@ -299,11 +313,12 @@ namespace Evals2Prototype.Objects
         {
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
-            Sb.Begin(SpriteSortMode.Immediate);
+            Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
             Sb.Draw(boundtx, BoundingBoxBot, InCollision);
             Sb.Draw(boundtx, BoundingBoxLeft, InLeft);
             Sb.Draw(boundtx, BoundingBoxRight, InRight);
             Sb.Draw(boundtx, BoundingBoxTop, InCollision);
+            Sb.DrawString(HUDtxt, "Deaths: " + deaths, Vector2.Zero, Color.Red);
             Sb.End();
             base.Draw(gameTime);
         }

@@ -35,7 +35,7 @@ namespace Evals2Prototype.Objects
         float timer = 0f;
         Rectangle sourceRectangle;
 
-        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen, int framecount):base(g)
+        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen,int framecount):base(g)
         {
             game = g;
             Visible = true;
@@ -116,9 +116,9 @@ namespace Evals2Prototype.Objects
             if (!Visible) return;
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
-            Sb.Begin(SpriteSortMode.Immediate);
+            Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
             Sb.Draw(Image,Position, source, Color.White,0f,Vector2.Zero,1.0f,_effect,0f);
-            //Sb.Draw(boundtx, BoundingBox, InCollision);
+            Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
             // TODO: Add your drawing code here
 

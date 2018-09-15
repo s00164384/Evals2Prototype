@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Evals2Prototype.Objects;
 using System.Collections.Generic;
 
@@ -14,9 +16,13 @@ namespace Evals2Prototype
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D testSprite;
+        SpriteFont _sf;
+        Song backingTrack;
+        Rectangle bounds;
 
         public Game1()
         {
+            
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
@@ -43,7 +49,13 @@ namespace Evals2Prototype
         /// </summary>
         protected override void LoadContent()
         {
+            bounds = new Rectangle(0, 0, 5000,5000);
+            backingTrack = Content.Load<Song>("Sounds/bg");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(backingTrack);
+            new Camera(this, Vector2.Zero, new Vector2(5000,5000));
             // Create a new SpriteBatch, which can be used to draw textures.
+            _sf = Content.Load<SpriteFont>("Fonts/Score");
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
             testSprite = Content.Load<Texture2D>("Backgrounds/xp");
@@ -58,11 +70,15 @@ namespace Evals2Prototype
             new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1),
             new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1)
             };
-            Player testPlayer = new Player(this,Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"),floor,new Vector2(64,64),4, new Texture2D[] { Content.Load<Texture2D>("Sprites/evals"), Content.Load<Texture2D>("Sprites/evalsRight"), Content.Load<Texture2D>("Sprites/evalsJump"), Content.Load<Texture2D>("Sprites/evalsFall") });
-            Enemy enemyTest = new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(0, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 1, floor, 1);
-            Enemy enemyTest2 = new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(1000, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1);
-            Enemy enemyTest3 = new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(450, 286), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1);
-
+            List<Enemy> enemies = new List<Enemy>
+            {
+            new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(0, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 1, floor, 1),
+            new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(1000, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1),
+            new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(450, 286), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1)
+            };
+            SoundEffect oof = Content.Load<SoundEffect>("Sounds/oof");
+            Player testPlayer = new Player(this, Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"), floor, new Vector2(64, 64), 4, new Texture2D[] { Content.Load<Texture2D>("Sprites/evals"), Content.Load<Texture2D>("Sprites/evalsRight"), Content.Load<Texture2D>("Sprites/evalsJump"), Content.Load<Texture2D>("Sprites/evalsFall") },enemies,oof,_sf);
+          
 
             // TODO: use this.Content to load your game content here
         }
@@ -97,9 +113,11 @@ namespace Evals2Prototype
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            spriteBatch.Begin();
-            spriteBatch.Draw(testSprite, graphics.GraphicsDevice.Viewport.Bounds, Color.White);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null,
+                                Camera.CurrentCameraTranslation);
+            spriteBatch.Draw(testSprite, bounds, Color.White);
+
             spriteBatch.End();
             // TODO: Add your drawing code here
             // TODO: Add your drawing code here

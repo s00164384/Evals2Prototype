@@ -57,7 +57,8 @@ namespace Evals2Prototype.Objects
             if (!Visible) return;
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
-            Sb.Begin(SpriteSortMode.Immediate);
+            Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null,
+                                Camera.CurrentCameraTranslation);
             Sb.Draw(boundtx, BoundingBoxBot, Color.White);
             //Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
