@@ -32,6 +32,7 @@ namespace Evals2Prototype.Objects
         Rectangle BoundingBoxLeft;
         Rectangle BoundingBoxRight;
         Rectangle BoundingBoxTop;
+        Rectangle BoundingBoxBot2;
 
         Color InRight = Color.Red;
         Color InLeft = Color.Red;
@@ -151,7 +152,7 @@ namespace Evals2Prototype.Objects
             bool stillGrounded = false;
             
             BoundingBoxBot = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y - 2 + (int)movement.Y, ((int)Dimensions.Y/3) *2, 2);
-            Rectangle BoundingBoxBot2 = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y + 2 + (int)movement.Y, ((int)Dimensions.X/3)*2, 2);
+            BoundingBoxBot2 = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y + 2 + (int)movement.Y, ((int)Dimensions.X/3)*2, 2);
             BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y / 4 + (int)movement.Y, 2, (int)Dimensions.Y / 2);
             BoundingBoxRight = new Rectangle((int)Position.X + (int)Dimensions.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y/4 + (int)movement.Y, 2, (int)Dimensions.Y/2);
             BoundingBoxTop = new Rectangle((int)Position.X + (int)Dimensions.X / 3 + (int)movement.X, (int)Position.Y + (int)movement.Y, (int)Dimensions.Y / 3, 2);
@@ -165,27 +166,13 @@ namespace Evals2Prototype.Objects
                 {           
                             Position.Y = a.BoundingBox.Y - 64 - 1f;
                             gravity = 0f;
-                    movement.Y = 0;
+                            movement.Y = 0;
                             grounded = true;
 
                     InCollision = Color.Green;
                     break;
                 }
-                //else
-                //{
-                //    if (Position.Y != a.BoundingBox.Y - 64 - 1f)
-                //    {
-                //        grounded = false;
-                //        InCollision = Color.Red;
-                //    }
-                //    else
-                //    {
-                //        if(movement.Y > 0)
-                //        movement.Y = 0f;
-                //        grounded = true;
-                        
-                //    }
-                //}
+     
                 #endregion
                 #region rightCollision
                 if (BoundingBoxRight.Intersects(a.BoundingBox))
@@ -201,21 +188,7 @@ namespace Evals2Prototype.Objects
                 {
                     InRight = Color.Red;
                 }
-                //else
-                //{
-                //    if (Position.X != a.BoundingBox.X - 64 - 1f)
-                //    {
-                //        grounded = false;
-                //        InCollision = Color.Red;
-                //    }
-                //    else
-                //    {
-                //        if (movement.Y > 0)
-                //            movement.Y = 0f;
-                //        grounded = true;
-                //        break;
-                //    }
-                //}
+             
                 #endregion
                 #region leftCollision
                 if (BoundingBoxLeft.Intersects(a.BoundingBox))
@@ -231,21 +204,7 @@ namespace Evals2Prototype.Objects
                 {
                     InLeft = Color.Red;
                 }
-                //else
-                //{
-                //    if (Position.Y != a.BoundingBox.Y - 64 - 1f)
-                //    {
-                //        grounded = false;
-                //        InCollision = Color.Red;
-                //    }
-                //    else
-                //    {
-                //        if (movement.Y > 0)
-                //            movement.Y = 0f;
-                //        grounded = true;
-                //        break;
-                //    }
-                //}
+        
                 #endregion
                 #region ceilingCollision
                 if (BoundingBoxTop.Intersects(a.BoundingBox))
@@ -314,7 +273,7 @@ namespace Evals2Prototype.Objects
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
-            Sb.Draw(boundtx, BoundingBoxBot, InCollision);
+            Sb.Draw(boundtx, BoundingBoxBot2, InCollision);
             Sb.Draw(boundtx, BoundingBoxLeft, InLeft);
             Sb.Draw(boundtx, BoundingBoxRight, InRight);
             Sb.Draw(boundtx, BoundingBoxTop, InCollision);
