@@ -19,6 +19,7 @@ namespace Evals2Prototype.Objects
         Texture2D[] _States;
         bool grounded;
         float gravity = 0f;
+        CameraGuide _guide;
         
         Vector2 oldPosition;
         SoundEffect death;
@@ -27,6 +28,7 @@ namespace Evals2Prototype.Objects
         Vector2 originPoint;
         List<Wall> floors;
         List<Enemy> enemies;
+        List<Door> doors;
 
         Rectangle BoundingBoxBot;
         Rectangle BoundingBoxLeft;
@@ -38,20 +40,24 @@ namespace Evals2Prototype.Objects
         Color InLeft = Color.Red;
 
 
-        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen,int frames,Texture2D[] states,List<Enemy> e,SoundEffect oof,SpriteFont sf) : base(g,tx,pos,"player",bounds,dimen,frames)
+        public Player(Game g, Texture2D tx, Vector2 pos,Texture2D bounds,List<Wall> f,Vector2 dimen,int frames,Texture2D[] states,List<Enemy> e,SoundEffect oof,SpriteFont sf,CameraGuide guide, List<Door> door) : base(g,tx,pos,"player",bounds,dimen,frames)
         {
             floors = f;
             grounded = false;
             _States = states;
             originPoint = pos;
             enemies = e;
+            doors = door;
             death = oof;
             HUDtxt = sf;
+            _guide = guide;
+            _guide.Visible = false;
             
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (!Visible) return;
             oldPosition = Position;
             int LastState = _moveState;
            
@@ -150,7 +156,7 @@ namespace Evals2Prototype.Objects
 
 
             bool stillGrounded = false;
-            
+          
             BoundingBoxBot = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y - 2 + (int)movement.Y, ((int)Dimensions.Y/3) *2, 2);
             BoundingBoxBot2 = new Rectangle((int)Position.X + (int)Dimensions.X/6 + (int)movement.X, (int)Position.Y + (int)Dimensions.Y + 2 + (int)movement.Y, ((int)Dimensions.X/3)*2, 2);
             BoundingBoxLeft = new Rectangle((int)Position.X + (int)movement.X, (int)Position.Y + (int)Dimensions.Y / 4 + (int)movement.Y, 2, (int)Dimensions.Y / 2);
@@ -242,17 +248,10 @@ namespace Evals2Prototype.Objects
                 grounded = false;
             }
                 Move(movement);
+            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
 
 
-            //Position.Y = collidingWith.BoundingBox.Top - (64); 
-            //}
-            //else
-            //{
-            //    onSide = false;
-            //    grounded = false;
-            //}
-
-
+            //Collision with enemy
             foreach (Enemy e in enemies)
             {
                 if (BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
@@ -261,6 +260,28 @@ namespace Evals2Prototype.Objects
                     deaths++;
                     Position = originPoint;
                     death.Play();
+                }
+            }
+
+            foreach(Door d in doors)
+            {
+                if(BoundingBox.Intersects(d.BoundingBox))
+                {
+                    _guide.Visible = true;
+                    _guide.Position = d.DoorLeft;
+                    _guide._destination = d.DoorRight;
+                    _guide._dir = "right";
+                    this.Visible = false;
+                    movement = Vector2.Zero;
+                }
+                else if(BoundingBox.Intersects(d.BoundingBox2))
+                {
+                    _guide.Visible = true;
+                    _guide.Position = d.DoorRight;
+                    _guide._destination = d.DoorLeft;
+                    _guide._dir = "left";
+                    this.Visible = false;
+                    movement = Vector2.Zero;
                 }
             }
 

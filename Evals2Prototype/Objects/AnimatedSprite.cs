@@ -81,8 +81,10 @@ namespace Evals2Prototype.Objects
                 //reset our timer
                 timer = 0f;
             }
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
+            //BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
             source = new Rectangle(currentFrame * (int)Dimensions.X, 0, (int)Dimensions.X, (int)Dimensions.Y);
+
+
 
 
             base.Update(gameTime);
@@ -118,7 +120,7 @@ namespace Evals2Prototype.Objects
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
             Sb.Draw(Image,Position, source, Color.White,0f,Vector2.Zero,1.0f,_effect,0f);
-            //Sb.Draw(boundtx, BoundingBox, InCollision);
+            Sb.Draw(boundtx, BoundingBox, InCollision);
             Sb.End();
             // TODO: Add your drawing code here
 

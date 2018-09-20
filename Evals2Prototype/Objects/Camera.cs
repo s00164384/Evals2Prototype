@@ -43,12 +43,21 @@ namespace Evals2Prototype.Objects
 
         public override void Update(GameTime gameTime)
         {
+            CameraGuide guide;
             Player p;
-            p = (Player)Game.Components
-                .FirstOrDefault(pl => pl.GetType() == typeof(Player));
-            if (p != null)
-                follow(p.Position, Game.GraphicsDevice.Viewport);
 
+            guide = (CameraGuide)Game.Components
+                .FirstOrDefault(pl => pl.GetType() == typeof(CameraGuide));
+            if (guide != null && guide.Visible)
+                follow(guide.Position, Game.GraphicsDevice.Viewport);
+            else
+            {
+                
+                p = (Player)Game.Components
+                    .FirstOrDefault(pl => pl.GetType() == typeof(Player));
+                if (p != null)
+                    follow(p.Position, Game.GraphicsDevice.Viewport);
+            }
             base.Update(gameTime);
         }
 

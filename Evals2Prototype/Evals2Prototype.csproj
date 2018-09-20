@@ -44,6 +44,8 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Objects\AnimatedSprite.cs" />
     <Compile Include="Objects\Camera.cs" />
+    <Compile Include="Objects\CameraGuide.cs" />
+    <Compile Include="Objects\Door.cs" />
     <Compile Include="Objects\Enemy.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\Wall.cs" />

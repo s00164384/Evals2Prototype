@@ -24,6 +24,7 @@ namespace Evals2Prototype.Objects
         {
             if (!Visible) return;
             bool grounded = false;
+
             BoundingBoxBot = new Rectangle((int)Position.X + (int)Dimensions.X / 3 , (int)Position.Y + (int)Dimensions.Y + 2, ((int)Dimensions.X / 3), 2);
             foreach(Wall w in level)
             {
@@ -48,6 +49,7 @@ namespace Evals2Prototype.Objects
                 _dir = "left";
                 Position.X += -1f;
             }
+            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
 
             base.Update(gameTime);
         }

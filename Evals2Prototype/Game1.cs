@@ -49,11 +49,11 @@ namespace Evals2Prototype
         /// </summary>
         protected override void LoadContent()
         {
-            bounds = new Rectangle(0, 0, 5000,5000);
+            bounds = new Rectangle(0, 0, 5000, 5000);
             backingTrack = Content.Load<Song>("Sounds/bg");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(backingTrack);
-            new Camera(this, Vector2.Zero, new Vector2(5000,5000));
+            //MediaPlayer.Play(backingTrack);
+            new Camera(this, Vector2.Zero, new Vector2(5000, 5000));
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = Content.Load<SpriteFont>("Fonts/Score");
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -77,7 +77,12 @@ namespace Evals2Prototype
             new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(450, 286), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1)
             };
             SoundEffect oof = Content.Load<SoundEffect>("Sounds/oof");
-            Player testPlayer = new Player(this, Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"), floor, new Vector2(64, 64), 4, new Texture2D[] { Content.Load<Texture2D>("Sprites/evals"), Content.Load<Texture2D>("Sprites/evalsRight"), Content.Load<Texture2D>("Sprites/evalsJump"), Content.Load<Texture2D>("Sprites/evalsFall") },enemies,oof,_sf);
+            List<Door> doors = new List<Door>
+            {
+                new Door(this, Content.Load<Texture2D>("Sprites/floor"),new Vector2(200,150),new Vector2(1200,150),Content.Load<Texture2D>("Sprites/hitbox"),new Vector2(32,64),1)
+            };
+            CameraGuide _tager = new CameraGuide(this, Content.Load<Texture2D>("Sprites/tager"), Vector2.Zero, Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 0);
+            Player testPlayer = new Player(this, Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"), floor, new Vector2(64, 64), 4, new Texture2D[] { Content.Load<Texture2D>("Sprites/evals"), Content.Load<Texture2D>("Sprites/evalsRight"), Content.Load<Texture2D>("Sprites/evalsJump"), Content.Load<Texture2D>("Sprites/evalsFall") },enemies,oof,_sf,_tager,doors);
           
 
             // TODO: use this.Content to load your game content here
