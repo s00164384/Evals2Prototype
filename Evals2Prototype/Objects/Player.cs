@@ -291,6 +291,7 @@ namespace Evals2Prototype.Objects
 
         public override void Draw(GameTime gameTime)
         {
+            if (!Visible) return;
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
@@ -298,8 +299,11 @@ namespace Evals2Prototype.Objects
             Sb.Draw(boundtx, BoundingBoxLeft, InLeft);
             Sb.Draw(boundtx, BoundingBoxRight, InRight);
             Sb.Draw(boundtx, BoundingBoxTop, InCollision);
+            Sb.End();
+            Sb.Begin();
             Sb.DrawString(HUDtxt, "Deaths: " + deaths, Vector2.Zero, Color.Red);
             Sb.End();
+
             base.Draw(gameTime);
         }
 

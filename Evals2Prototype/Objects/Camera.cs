@@ -11,6 +11,7 @@ namespace Evals2Prototype.Objects
     {
         static Vector2 _camPos = Vector2.Zero;
         Vector2 _worldBound;
+        public Scene scene;
         static public Matrix CurrentCameraTranslation
         {
             get
@@ -34,11 +35,12 @@ namespace Evals2Prototype.Objects
             }
         }
 
-        public Camera(Game game, Vector2 startPos, Vector2 bound) : base(game)
+        public Camera(Game game, Vector2 startPos, Vector2 bound,Scene s) : base(game)
         {
             game.Components.Add(this);
             CamPos = startPos;
             _worldBound = bound;
+            scene = s;
         }
 
         public override void Update(GameTime gameTime)
@@ -46,14 +48,14 @@ namespace Evals2Prototype.Objects
             CameraGuide guide;
             Player p;
 
-            guide = (CameraGuide)Game.Components
+            guide = (CameraGuide)scene.Components
                 .FirstOrDefault(pl => pl.GetType() == typeof(CameraGuide));
             if (guide != null && guide.Visible)
                 follow(guide.Position, Game.GraphicsDevice.Viewport);
             else
             {
                 
-                p = (Player)Game.Components
+                p = (Player)scene.Components
                     .FirstOrDefault(pl => pl.GetType() == typeof(Player));
                 if (p != null)
                     follow(p.Position, Game.GraphicsDevice.Viewport);

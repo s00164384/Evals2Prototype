@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Evals2Prototype.Objects;
+using Evals2Prototype.Scenes;
 using System.Collections.Generic;
 
 namespace Evals2Prototype
@@ -14,11 +15,10 @@ namespace Evals2Prototype
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
+        Scene scene;
+        Scene scene2;
         SpriteBatch spriteBatch;
-        Texture2D testSprite;
-        SpriteFont _sf;
-        Song backingTrack;
-        Rectangle bounds;
+
 
         public Game1()
         {
@@ -38,6 +38,10 @@ namespace Evals2Prototype
         /// </summary>
         protected override void Initialize()
         {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            Services.AddService(typeof(SpriteBatch), spriteBatch);
+            SceneManager manager = new SceneManager(this, new List<Scene> { new Scene1(this) });
+
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -49,40 +53,7 @@ namespace Evals2Prototype
         /// </summary>
         protected override void LoadContent()
         {
-            bounds = new Rectangle(0, 0, 5000, 5000);
-            backingTrack = Content.Load<Song>("Sounds/bg");
-            MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(backingTrack);
-            new Camera(this, Vector2.Zero, new Vector2(5000, 5000));
-            // Create a new SpriteBatch, which can be used to draw textures.
-            _sf = Content.Load<SpriteFont>("Fonts/Score");
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            Services.AddService(typeof(SpriteBatch), spriteBatch);
-            testSprite = Content.Load<Texture2D>("Backgrounds/xp");
-            List<Wall> floor = new List<Wall>
-            {
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1),
-            new Wall(this, Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1)
-            };
-            List<Enemy> enemies = new List<Enemy>
-            {
-            new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(0, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 1, floor, 1),
-            new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(1000, 136), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1),
-            new Enemy(this, Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(450, 286), Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, floor, 1)
-            };
-            SoundEffect oof = Content.Load<SoundEffect>("Sounds/oof");
-            List<Door> doors = new List<Door>
-            {
-                new Door(this, Content.Load<Texture2D>("Sprites/floor"),new Vector2(200,150),new Vector2(1200,150),Content.Load<Texture2D>("Sprites/hitbox"),new Vector2(32,64),1)
-            };
-            CameraGuide _tager = new CameraGuide(this, Content.Load<Texture2D>("Sprites/tager"), Vector2.Zero, Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 0);
-            Player testPlayer = new Player(this, Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), Content.Load<Texture2D>("Sprites/hitbox"), floor, new Vector2(64, 64), 4, new Texture2D[] { Content.Load<Texture2D>("Sprites/evals"), Content.Load<Texture2D>("Sprites/evalsRight"), Content.Load<Texture2D>("Sprites/evalsJump"), Content.Load<Texture2D>("Sprites/evalsFall") },enemies,oof,_sf,_tager,doors);
+
           
 
             // TODO: use this.Content to load your game content here
@@ -119,11 +90,7 @@ namespace Evals2Prototype
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null,
-                                Camera.CurrentCameraTranslation);
-            spriteBatch.Draw(testSprite, bounds, Color.White);
 
-            spriteBatch.End();
             // TODO: Add your drawing code here
             // TODO: Add your drawing code here
 

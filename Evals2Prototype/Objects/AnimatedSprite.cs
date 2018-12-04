@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Evals2Prototype.Objects
 {
-    public class AnimatedSprite : DrawableGameComponent
+    public class AnimatedSprite
     {
         public Texture2D Image;
         public Texture2D boundtx;
@@ -27,6 +27,7 @@ namespace Evals2Prototype.Objects
         public AnimatedSprite collidingWith;
         Vector2 movement = new Vector2(0, 0);
         SpriteEffects _effect;
+        public bool Visible;
 
         //For animating
         int Frames = 1;
@@ -35,7 +36,7 @@ namespace Evals2Prototype.Objects
         float timer = 0f;
         Rectangle sourceRectangle;
 
-        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen,int framecount):base(g)
+        public AnimatedSprite(Game g,Texture2D tx,Vector2 pos,string t,Texture2D bounds,Vector2 dimen,int framecount)
         {
             game = g;
             Visible = true;
@@ -47,13 +48,12 @@ namespace Evals2Prototype.Objects
             speed = 5;
             Dimensions = dimen;
             Frames = framecount; 
-            g.Components.Add(this);
             
             
 
         }
 
-        public override void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             oldPosition = Position;
             Frames = Image.Width / (int)Dimensions.X;
@@ -87,7 +87,6 @@ namespace Evals2Prototype.Objects
 
 
 
-            base.Update(gameTime);
         }
 
         public bool Collision(AnimatedSprite other)
@@ -113,7 +112,7 @@ namespace Evals2Prototype.Objects
             Position += movement;
         }
 
-        public override void Draw(GameTime gameTime)
+        public virtual void Draw(GameTime gameTime)
         {
             if (!Visible) return;
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
@@ -124,7 +123,6 @@ namespace Evals2Prototype.Objects
             Sb.End();
             // TODO: Add your drawing code here
 
-            base.Draw(gameTime);
         }
     }
 }
