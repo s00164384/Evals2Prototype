@@ -247,8 +247,8 @@ namespace Evals2Prototype.Objects
             {
                 grounded = false;
             }
-                Move(movement);
-            BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
+                this.Move(movement);
+
 
 
             //Collision with enemy
@@ -284,7 +284,7 @@ namespace Evals2Prototype.Objects
                     movement = Vector2.Zero;
                 }
             }
-
+            this.BoundingBox = new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
 
             base.Update(gameTime);
         }

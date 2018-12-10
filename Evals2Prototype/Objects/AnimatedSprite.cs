@@ -83,33 +83,34 @@ namespace Evals2Prototype.Objects
             }
             //BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X, (int)Dimensions.Y);
             source = new Rectangle(currentFrame * (int)Dimensions.X, 0, (int)Dimensions.X, (int)Dimensions.Y);
+            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, (int)Dimensions.X,(int)Dimensions.Y);
 
 
 
 
         }
 
-        public bool Collision(AnimatedSprite other)
-        {
-            BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, 64, 64);
-            Rectangle OtherBox = new Rectangle((int)other.Position.X, (int)other.Position.Y, other.Image.Width, other.Image.Height);
-            if (BoundingBox.Intersects(OtherBox))
-            {
-                InCollision = Color.Green;
-                collidingWith = other;
-                return true;
-            }
-            else
-            {
-                InCollision = Color.White;
-                collidingWith = null;
-                return false;
-            }
-        }
+        //public bool Collision(AnimatedSprite other)
+        //{
+        //    BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, 64, 64);
+        //    Rectangle OtherBox = new Rectangle((int)other.Position.X, (int)other.Position.Y, other.Image.Width, other.Image.Height);
+        //    if (BoundingBox.Intersects(OtherBox))
+        //    {
+        //        InCollision = Color.Green;
+        //        collidingWith = other;
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        InCollision = Color.White;
+        //        collidingWith = null;
+        //        return false;
+        //    }
+        //}
 
         public void Move(Vector2 movement)
         {
-            Position += movement;
+            this.Position += movement;
         }
 
         public virtual void Draw(GameTime gameTime)
@@ -119,7 +120,7 @@ namespace Evals2Prototype.Objects
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
             Sb.Draw(Image,Position, source, Color.White,0f,Vector2.Zero,1.0f,_effect,0f);
-            Sb.Draw(boundtx, BoundingBox, InCollision);
+            //Sb.Draw(boundtx, Position, BoundingBox, InCollision, 0f, Vector2.Zero, 1.0f, _effect, 0f);
             Sb.End();
             // TODO: Add your drawing code here
 

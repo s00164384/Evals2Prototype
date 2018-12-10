@@ -11,25 +11,23 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Evals2Prototype.Objects
 {
-    class SceneManager : DrawableGameComponent
+    class SceneManager : GameComponent
     {
         Scene activeScene;
 
         public SceneManager(Game g,List<Scene> scenes) :base(g)
         {
             activeScene = scenes.ElementAt(0);
+            activeScene.active = true;
         }
 
         public override void Update(GameTime gameTime)
         {
-            activeScene.Update(gameTime);
+            if (activeScene.active)
+                activeScene.Update(gameTime);
+            else
+                activeScene.active = true;
             base.Update(gameTime);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            activeScene.Draw(gameTime);
-            base.Draw(gameTime);
         }
 
 

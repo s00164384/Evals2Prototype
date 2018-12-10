@@ -17,6 +17,7 @@ namespace Evals2Prototype.Objects
 
         public Game game;
         public List<AnimatedSprite> Components = new List<AnimatedSprite>();
+        public bool active;
 
        public Scene(Game g) : base(g)
         {
@@ -27,7 +28,8 @@ namespace Evals2Prototype.Objects
        
         public override void Update(GameTime gameTime)
         {
-            foreach(AnimatedSprite a in Components)
+            if (!active) return;
+            foreach (AnimatedSprite a in Components)
             {
                 a.Update(gameTime);
             }
@@ -36,6 +38,7 @@ namespace Evals2Prototype.Objects
 
         public override void Draw(GameTime gameTime)
         {
+            if (!active) return;
             foreach(AnimatedSprite a in Components)
             {
                 a.Draw(gameTime);
