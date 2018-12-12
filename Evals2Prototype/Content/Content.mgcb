@@ -152,3 +152,9 @@
 /processorParam:Quality=Best
 /build:Sounds/bg.mp3
 
+#begin Sounds/dnb.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/dnb.mp3
+

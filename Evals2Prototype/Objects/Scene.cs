@@ -18,9 +18,11 @@ namespace Evals2Prototype.Objects
         public Game game;
         public List<AnimatedSprite> Components = new List<AnimatedSprite>();
         public bool active;
-
-       public Scene(Game g) : base(g)
+        public string _name;
+        public Song bgm;
+        public Scene(Game g) : base(g)
         {
+            active = false;
             g.Components.Add(this);
             game = g;
         }

@@ -14,17 +14,16 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Evals2Prototype.Scenes
 {
-    class Scene1 :Scene
+    class Scene2 :Scene
     {
         SpriteBatch spriteBatch;
         Texture2D testSprite;
         SpriteFont _sf;
- 
         Rectangle bounds;
 
-        public Scene1(Game g) :base(g)
+        public Scene2(Game g) :base(g)
         {
-            _name = "First Level";
+            _name = "Second Level";
         }
 
         protected override void LoadContent()
@@ -32,9 +31,7 @@ namespace Evals2Prototype.Scenes
             bounds = new Rectangle(0, 0, 5000, 5000);
             bgm = game.Content.Load<Song>("Sounds/bg");
             MediaPlayer.Play(bgm);
-            //MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(backingTrack);
-            //new Camera(game, Vector2.Zero, new Vector2(5000, 5000),this);
+
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = game.Content.Load<SpriteFont>("Fonts/Score");
 
@@ -44,7 +41,7 @@ namespace Evals2Prototype.Scenes
             {
             new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32),1),
             new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1000, 32),1),
             new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
             new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
             new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32),1),
@@ -88,7 +85,7 @@ namespace Evals2Prototype.Scenes
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
-            Sb.Draw(testSprite, bounds, Color.White);
+            //Sb.Draw(testSprite, bounds, Color.White);
             Sb.End();
             base.Draw(gameTime);
         }

@@ -40,7 +40,7 @@ namespace Evals2Prototype
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-            SceneManager manager = new SceneManager(this, new List<Scene> { new Scene1(this) });
+            SceneManager manager = new SceneManager(this, new List<Scene> { new Scene1(this),new Scene2(this) });
 
             // TODO: Add your initialization logic here
 
