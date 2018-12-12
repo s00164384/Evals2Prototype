@@ -29,8 +29,8 @@ namespace Evals2Prototype.Scenes
         protected override void LoadContent()
         {
             bounds = new Rectangle(0, 0, 5000, 5000);
-            bgm = game.Content.Load<Song>("Sounds/bg");
-            MediaPlayer.Play(bgm);
+            bgm = game.Content.Load<Song>("Sounds/dnb");
+
 
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = game.Content.Load<SpriteFont>("Fonts/Score");
