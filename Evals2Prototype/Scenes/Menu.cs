@@ -21,6 +21,11 @@ namespace Evals2Prototype.Scenes
         SpriteFont _sf;
         Song backingTrack;
         Rectangle bounds;
+        public bool selectionMade;
+
+        int[] menuOptions = new int[3];
+        string[] menu = { "Scene 1", "Scene 2", "Exit" };
+        public int selection = 0;
 
         public Menu(Game g) :base(g)
         {
@@ -42,13 +47,60 @@ namespace Evals2Prototype.Scenes
             base.LoadContent();
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (!active) return;
+            selectionMade = false;
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                selection--;
+            }
+            else if(Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                selection++;
+            }
+
+            if(Keyboard.GetState().IsKeyDown(Keys.NumPad1))
+            {
+                selection = 0;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.NumPad2))
+            {
+                selection = 1;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.NumPad3))
+            {
+                selection = 2;
+            }
+
+            if (selection >= menuOptions.Length)
+            {
+                selection = 0;
+            }
+            if(selection < 0)
+            {
+                selection = menuOptions.Length - 1;
+            }
+
+            if(Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                selectionMade = true;
+            }
+          
+
+
+            base.Update(gameTime);
+        }
+
+
         public override void Draw(GameTime gameTime)
         {
             if (!active) return;
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
-            Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
-            //Sb.Draw(testSprite, bounds, Color.White);
+            Sb.Begin();
+            Sb.Draw(testSprite, bounds, Color.White);
+            Sb.DrawString(_sf, menu[selection], new Vector2(500, 500), Color.White);
             Sb.End();
             base.Draw(gameTime);
         }
