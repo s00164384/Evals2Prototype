@@ -36,8 +36,9 @@ namespace Evals2Prototype.Objects
         {
             if (!activeScene.active)
             {
+                MediaPlayer.Stop();
                 activeScene.active = true;
-
+                MediaPlayer.Play(activeScene.bgm);
             }
 
             if(activeScene._name == "Menu")
