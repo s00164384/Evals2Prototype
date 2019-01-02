@@ -28,6 +28,7 @@ namespace Evals2Prototype.Objects
         Vector2 movement = new Vector2(0, 0);
         SpriteEffects _effect;
         public bool Visible;
+        public bool isDestroyed;
 
         //For animating
         int Frames = 1;

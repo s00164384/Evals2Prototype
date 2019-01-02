@@ -62,7 +62,7 @@ namespace Evals2Prototype.Objects
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null,
                                 Camera.CurrentCameraTranslation);
             Sb.Draw(boundtx, BoundingBoxBot, Color.White);
-            //Sb.Draw(boundtx, BoundingBox, InCollision);
+            Sb.Draw(boundtx, BoundingBox, Color.Green);
             Sb.End();
             // TODO: Add your drawing code here
 

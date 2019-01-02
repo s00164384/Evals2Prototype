@@ -63,6 +63,7 @@ namespace Evals2Prototype.Objects
                     }
                 }
             }
+            //activeScene.Update(gameTime);
 
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && activeScene._name != "Menu")
@@ -82,7 +83,10 @@ namespace Evals2Prototype.Objects
             base.Update(gameTime);
         }
 
-
+        public void Draw(GameTime gameTime)
+        {
+            //activeScene.Draw(gameTime);
+        }
 
     }
 }

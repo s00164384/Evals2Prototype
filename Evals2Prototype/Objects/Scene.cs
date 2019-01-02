@@ -34,9 +34,15 @@ namespace Evals2Prototype.Objects
         public override void Update(GameTime gameTime)
         {
             if (!active) return;
-            foreach (AnimatedSprite a in Components)
+            for(int i = 0;i < Components.Count;i++)
             {
-                a.Update(gameTime);
+                AnimatedSprite s = Components.ElementAt(i);
+                s.Update(gameTime);
+                if(s.isDestroyed)
+                {
+                    Components.RemoveAt(i);
+                    i--;
+                }
             }
             base.Update(gameTime);
         }
