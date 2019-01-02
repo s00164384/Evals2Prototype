@@ -35,9 +35,9 @@ namespace Evals2Prototype.Scenes
         protected override void LoadContent()
         {
 
-            backingTrack = game.Content.Load<Song>("Sounds/bg");
-            MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(backingTrack);
+            bgm = game.Content.Load<Song>("Sounds/cloud");
+            //MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(bgm);
        
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = game.Content.Load<SpriteFont>("Fonts/Score");

@@ -158,3 +158,21 @@
 /processorParam:Quality=Best
 /build:Sounds/dnb.mp3
 
+#begin Sounds/zelda.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/zelda.mp3
+
+#begin Sounds/cloud.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/cloud.mp3
+
+#begin Sounds/desert.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/desert.mp3
+

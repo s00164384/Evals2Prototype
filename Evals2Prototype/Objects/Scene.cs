@@ -20,6 +20,9 @@ namespace Evals2Prototype.Objects
         public bool active;
         public string _name;
         public Song bgm;
+        public Texture2D walltx;
+
+
         public Scene(Game g) : base(g)
         {
             active = false;
