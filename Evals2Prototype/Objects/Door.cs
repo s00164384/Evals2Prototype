@@ -24,7 +24,7 @@ namespace Evals2Prototype.Objects
 
         public override void Update(GameTime gameTime)
         {
-            BoundingBox2 = new Rectangle((int)this.DoorLeft.X, (int)this.DoorLeft.Y, (int)Dimensions.X, (int)Dimensions.Y);
+            //BoundingBox2 = new Rectangle((int)this.DoorLeft.X, (int)this.DoorLeft.Y, (int)Dimensions.X, (int)Dimensions.Y);
             BoundingBox2 = new Rectangle((int)this.DoorRight.X, (int)this.DoorRight.Y, (int)Dimensions.X, (int)Dimensions.Y);
             base.Update(gameTime);
         }

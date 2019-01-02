@@ -16,7 +16,6 @@ namespace Evals2Prototype.Scenes
 {
     class Scene1 :Scene
     {
-        SpriteBatch spriteBatch;
         Texture2D testSprite;
         SpriteFont _sf;
  
@@ -78,7 +77,7 @@ namespace Evals2Prototype.Scenes
             CameraGuide _tager = new CameraGuide(game, game.Content.Load<Texture2D>("Sprites/tager"), Vector2.Zero, game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 0,this);
             Components.Add(_tager);
             Player testPlayer = new Player(game, game.Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), game.Content.Load<Texture2D>("Sprites/hitbox"), floor, new Vector2(64, 64), 4, new Texture2D[] { game.Content.Load<Texture2D>("Sprites/evals"), game.Content.Load<Texture2D>("Sprites/evalsRight"), game.Content.Load<Texture2D>("Sprites/evalsJump"), game.Content.Load<Texture2D>("Sprites/evalsFall") }, enemies, oof, _sf, _tager, doors);
-            Components.Add(testPlayer);
+            this.Components.Add(testPlayer);
             base.LoadContent();
         }
 

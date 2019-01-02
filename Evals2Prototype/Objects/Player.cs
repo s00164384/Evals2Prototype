@@ -252,14 +252,18 @@ namespace Evals2Prototype.Objects
 
 
             //Collision with enemy
-            foreach (Enemy e in enemies)
+            for(int i = 0; i < enemies.Count; i++)
             {
+                Enemy e = enemies.ElementAt(i);
                 if (BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
                 {
                     movement = Vector2.Zero;
+                    e.isDestroyed = true;
                     deaths++;
-                    Position = originPoint;
+                    //Position = originPoint;
                     death.Play();
+                    enemies.RemoveAt(i);
+                    i--;
                 }
             }
 

@@ -48,8 +48,10 @@
     <Compile Include="Objects\Door.cs" />
     <Compile Include="Objects\Enemy.cs" />
     <Compile Include="Objects\Player.cs" />
+    <Compile Include="Objects\RoomManager.cs" />
     <Compile Include="Objects\Scene.cs" />
     <Compile Include="Objects\SceneManager.cs" />
+    <Compile Include="Objects\Tileset.cs" />
     <Compile Include="Objects\Wall.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
