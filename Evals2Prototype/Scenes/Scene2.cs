@@ -21,6 +21,7 @@ namespace Evals2Prototype.Scenes
         SpriteFont _sf;
         Rectangle bounds;
 
+
         public Scene2(Game g) :base(g)
         {
             SetupRoom();
@@ -71,10 +72,8 @@ namespace Evals2Prototype.Scenes
         {
             bounds = new Rectangle(0, 0, 5000, 5000);
             bgm = game.Content.Load<Song>("Sounds/dnb");
-            List<Wall> floor = new List<Wall>();
-            Texture2D wallTX = game.Content.Load<Texture2D>("Sprites/Scene2/wall");
-            t.SetTiles(wallTX);
-            t2.SetTiles(wallTX);
+
+
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = game.Content.Load<SpriteFont>("Fonts/Score");
             
@@ -83,10 +82,16 @@ namespace Evals2Prototype.Scenes
 
             foreach(Wall w in t.floor)
             {
-                Components.Add(w);
-                floor.Add(w);
-            }
-            foreach (Wall w in t2.floor)
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1000, 32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1),
+            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1)
+            };
+            foreach(Wall w in floor)
             {
                 floor.Add(w);
                 Components.Add(w);
