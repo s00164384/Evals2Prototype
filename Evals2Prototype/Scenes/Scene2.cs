@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
+using System.IO;
 using System.Threading.Tasks;
 using Evals2Prototype.Objects;
 using Microsoft.Xna.Framework;
@@ -16,113 +18,64 @@ namespace Evals2Prototype.Scenes
 {
     class Scene2 :Scene
     {
-        Tileset t,t2;
+        Tileset t,t2,t3,t4;
         Texture2D testSprite;
         SpriteFont _sf;
         Rectangle bounds;
+        Tile test;
+        Tiles jsonTileset;
+        string json;
+        Texture2D background;
+        Player testPlayer;
 
 
-        public Scene2(Game g) :base(g)
+        public Scene2(Game g) : base(g)
         {
-            SetupRoom();
-            t = new Tileset(g, new Vector2(0,0));
-            t.Tiles = new int[][]
-         {
-                new int[] { 0, 0, 0,0,0,0,0,0,0,0,0,0 },
-                new int[] { 0, 0, 0, 0, 0, 0 },
-                new int[] { 0, 0, 0, 1, 0, 1 },
-                new int[] { 0, 1, 1, 0, 0, 1 },
-                new int[] { 0, 0, 0, 1, 0, 1 },
-                new int[] { 1, 0, 0, 1, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {0, 0, 0, 0, 0, 0 },
-                new int[] {1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
-         };
+ 
+            if (File.Exists("test.json"))
+            {
+                {
+                    using (StreamReader sr = new StreamReader("test.json"))
+                    {
+                        json = sr.ReadToEnd();
+                        jsonTileset = JsonConvert.DeserializeObject<Tiles>(json);
+
+                    }
+                }
+            }
+
+
+            t = new Tileset(g, new Vector2(0, 0));
+            t.jsonObj = new Tile
+            {
+                layout = jsonTileset.tiles[0].layout,
+                type = jsonTileset.tiles[0].type
+            };
             t2 = new Tileset(g, new Vector2(1, 0));
-            t2.Tiles = new int[][]
-         {
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-         };
+            t2.jsonObj = new Tile
+            {
+                layout = jsonTileset.tiles[1].layout,
+                type = jsonTileset.tiles[1].type
+            };
+
+            t3 = new Tileset(g, new Vector2(1, 1));
+            t3.jsonObj = new Tile
+            {
+                layout = jsonTileset.tiles[2].layout,
+                type = jsonTileset.tiles[2].type
+            };
+            t4 = new Tileset(g, new Vector2(0, 1));
+            t4.jsonObj = new Tile
+            {
+                layout = jsonTileset.tiles[2].layout,
+                type = jsonTileset.tiles[2].type
+            };
             _name = "Second Level";
         }
 
         protected override void LoadContent()
         {
-            bounds = new Rectangle(0, 0, 5000, 5000);
-            bgm = game.Content.Load<Song>("Sounds/dnb");
-
-
-            // Create a new SpriteBatch, which can be used to draw textures.
-            _sf = game.Content.Load<SpriteFont>("Fonts/Score");
-            
-
-            testSprite = game.Content.Load<Texture2D>("Backgrounds/xp");
-
-            foreach(Wall w in t.floor)
-            {
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 700) , game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1280, 32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 550) , game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500, 32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(780, 550), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(1000, 32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 400), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(980,400), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(300, 32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(390, 350), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(500,32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(0, 200), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1),
-            new Wall(game, game.Content.Load<Texture2D>("Sprites/floor"), new Vector2(705, 200), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(575,32),1)
-            };
-            foreach(Wall w in floor)
-            {
-                floor.Add(w);
-                Components.Add(w);
-            }
-            List<Enemy> enemies = new List<Enemy>
-            {
-            new Enemy(game, game.Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(0, 136), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 1, t.floor, 1),
-            new Enemy(game, game.Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(1000, 136), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, t.floor, 1),
-            new Enemy(game, game.Content.Load<Texture2D>("Sprites/Enemy"), new Vector2(450, 286), game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), -1, t.floor, 1)
-            };
-            foreach (Enemy e in enemies)
-            {
-                Components.Add(e);
-            }
-            List<Door> doors = new List<Door>
-            {
-                //new Door(game, game.Content.Load<Texture2D>("Sprites/floor"),new Vector2(200,150),new Vector2(1200,150),game.Content.Load<Texture2D>("Sprites/hitbox"),new Vector2(32,64),1)
-            };
-            foreach (Door d in doors)
-            {
-                this.Components.Add(d);
-            }
-            CameraGuide _tager = new CameraGuide(game, game.Content.Load<Texture2D>("Sprites/tager"), Vector2.Zero, game.Content.Load<Texture2D>("Sprites/hitbox"), new Vector2(64, 64), 0, this);
-            Components.Add(_tager);
-
-
-            SoundEffect oof = game.Content.Load<SoundEffect>("Sounds/oof");
-            
-
-            Player testPlayer = new Player(game, game.Content.Load<Texture2D>("Sprites/evals"), new Vector2(608, 500), game.Content.Load<Texture2D>("Sprites/hitbox"), floor, new Vector2(64, 64), 4, new Texture2D[] { game.Content.Load<Texture2D>("Sprites/evals"), game.Content.Load<Texture2D>("Sprites/evalsRight"), game.Content.Load<Texture2D>("Sprites/evalsJump"), game.Content.Load<Texture2D>("Sprites/evalsFall") }, enemies, oof, _sf, _tager, doors);
-            this.Components.Add(testPlayer);
+       
             base.LoadContent();
         }
 
@@ -132,13 +85,87 @@ namespace Evals2Prototype.Scenes
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
-            Sb.DrawString(_sf,"test", new Vector2(0,0), Color.White);
+            Sb.Draw(background, bounds, Color.White);
+            Sb.DrawString(_sf,json, new Vector2(0,0), Color.White);
             Sb.End();
             base.Draw(gameTime);
         }
+        public override void Update(GameTime gameTime)
+        {
+            if(testPlayer.deaths == 3)
+            {
+                active = false;
+                gotoMenu = true;
+            }
+            base.Update(gameTime);
+        }
 
+        public override void SetupRoom(Assets content)
+        {
+            bounds = new Rectangle(0, 0, 5000, 5000);
+            background = content.Backgrounds[1];
+            bgm = content.Songs[0];
+            List<Enemy> enemies = new List<Enemy>();
+            List<Wall> floor = new List<Wall>();
+            walltx = content.Wall;
+            Texture2D enemytx = content.Enemy;
+            Texture2D debugBox = content.DebugBox;
+            // Create a new SpriteBatch, which can be used to draw textures.
+            _sf = content.Font;
 
-        void SetupRoom()
-        { }
+            t.SetTiles(walltx, enemytx, debugBox);
+            t2.SetTiles(walltx, enemytx, debugBox);
+            t3.SetTiles(walltx, enemytx, debugBox);
+            t4.SetTiles(walltx, enemytx, debugBox);
+            testSprite = content.Backgrounds[0];
+
+            foreach (Wall w in t.floor)
+            {
+                floor.Add(w);
+                Components.Add(w);
+            }
+            foreach (Wall w in t2.floor)
+            {
+                floor.Add(w);
+                Components.Add(w);
+            }
+            foreach (Wall w in t3.floor)
+            {
+                floor.Add(w);
+                Components.Add(w);
+            }
+            foreach (Wall w in t4.floor)
+            {
+                floor.Add(w);
+                Components.Add(w);
+            }
+
+            foreach (Enemy e in t.enemies)
+            {
+                enemies.Add(e);
+                Components.Add(e);
+            }
+            foreach (Enemy e in t2.enemies)
+            {
+                enemies.Add(e);
+                Components.Add(e);
+            }
+
+            foreach (Enemy e in t3.enemies)
+            {
+                enemies.Add(e);
+                Components.Add(e);
+            }
+            foreach (Enemy e in t4.enemies)
+            {
+                enemies.Add(e);
+                Components.Add(e);
+            }
+
+            testPlayer = new Player(game, new Vector2(608, 300), debugBox, new Vector2(46, 48), 4, content.Player, _sf);
+            testPlayer.floors = floor;
+            testPlayer.enemies = enemies;
+            this.Components.Add(testPlayer);
+        }
     }
 }

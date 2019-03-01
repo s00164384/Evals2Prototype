@@ -13,6 +13,8 @@ namespace Evals2Prototype.Objects
         int _Right;
         List<Wall> level;
         Rectangle BoundingBoxBot;
+        Rectangle BoundingBoxRight;
+        Rectangle BoundingBoxLeft;
         public Enemy(Game g, Texture2D tx, Vector2 pos, Texture2D boundsTx, Vector2 dimen, int right , List<Wall> f,int frames) : base(g, tx, pos, "enemy", boundsTx, dimen,frames)
         {
             _Right = right;
@@ -26,11 +28,26 @@ namespace Evals2Prototype.Objects
             bool grounded = false;
 
             BoundingBoxBot = new Rectangle((int)Position.X + (int)Dimensions.X / 3 , (int)Position.Y + (int)Dimensions.Y + 2, ((int)Dimensions.X / 3), 2);
-            foreach(Wall w in level)
+
+            this.BoundingBoxLeft = new Rectangle((int)Position.X - 4, (int)Position.Y + (int)Dimensions.Y / 4, 2, (int)Dimensions.Y / 2);
+            this.BoundingBoxRight = new Rectangle((int)Position.X + (int)Dimensions.X + 2, ((int)Position.Y + (int)Dimensions.Y / 4), 2, (int)Dimensions.Y / 2);
+
+
+            foreach (Wall w in level)
             {
                 if(BoundingBoxBot.Intersects(w.BoundingBox))
                     {
                     grounded = true;
+                }
+                if (BoundingBoxRight.Intersects(w.BoundingBox))
+                {
+                    grounded = false;
+                    break;
+                }
+                if (BoundingBoxLeft.Intersects(w.BoundingBox))
+                {
+                    grounded = false;
+                    break;
                 }
             }
 
@@ -62,7 +79,9 @@ namespace Evals2Prototype.Objects
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null,
                                 Camera.CurrentCameraTranslation);
             Sb.Draw(boundtx, BoundingBoxBot, Color.White);
-            Sb.Draw(boundtx, BoundingBox, Color.Green);
+            Sb.Draw(boundtx, BoundingBoxLeft, Color.White);
+            Sb.Draw(boundtx, BoundingBoxRight, Color.White);
+            //Sb.Draw(boundtx, BoundingBox, Color.Green);
             Sb.End();
             // TODO: Add your drawing code here
 

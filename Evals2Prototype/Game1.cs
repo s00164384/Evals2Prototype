@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Media;
 using Evals2Prototype.Objects;
 using Evals2Prototype.Scenes;
 using System.Collections.Generic;
+using System;
 
 namespace Evals2Prototype
 {
@@ -28,6 +29,10 @@ namespace Evals2Prototype
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+
+
+            //this.IsFixedTimeStep = true;//false;
+            //this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 10d); //60);
         }
 
         /// <summary>
@@ -40,7 +45,7 @@ namespace Evals2Prototype
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-            SceneManager manager = new SceneManager(this, new List<Scene> { new Scene1(this),new Scene2(this) });
+            SceneManager manager = new SceneManager(this);
 
             // TODO: Add your initialization logic here
 

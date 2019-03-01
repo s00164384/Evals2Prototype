@@ -31,7 +31,7 @@ namespace Evals2Prototype.Objects
         public bool isDestroyed;
 
         //For animating
-        int Frames = 1;
+        public int Frames = 1;
         public int currentFrame = 0;
         int timeBetweenFrames = 100;
         float timer = 0f;

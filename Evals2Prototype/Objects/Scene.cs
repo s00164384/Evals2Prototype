@@ -18,6 +18,7 @@ namespace Evals2Prototype.Objects
         public Game game;
         public List<AnimatedSprite> Components = new List<AnimatedSprite>();
         public bool active;
+        public bool gotoMenu;
         public string _name;
         public Song bgm;
         public Texture2D walltx;
@@ -30,7 +31,10 @@ namespace Evals2Prototype.Objects
             game = g;
         }
 
-       
+            public virtual void SetupRoom(Assets content)
+        {
+
+        }
         public override void Update(GameTime gameTime)
         {
             if (!active) return;
