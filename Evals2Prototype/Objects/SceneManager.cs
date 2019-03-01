@@ -78,15 +78,11 @@ namespace Evals2Prototype.Objects
                     {
                         case 0:
                             activeScene.active = false;
-                            activeScene = sceneList.ElementAt(0);
-                            break;
-                        case 1:
-                            activeScene.active = false;
                                 Scene2 s = new Scene2(game);
                                 s.SetupRoom(content);
                                 activeScene = s;
                             break;
-                        case 2:
+                        case 1:
                             Game.Exit();
                             break;
                         default:

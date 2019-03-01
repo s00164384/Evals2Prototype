@@ -45,30 +45,34 @@ namespace Evals2Prototype.Scenes
             }
 
 
-            t = new Tileset(g, new Vector2(0, 0));
+            t = new Tileset(g, new Vector2(2, 0));
             t.jsonObj = new Tile
             {
                 layout = jsonTileset.tiles[0].layout,
-                type = jsonTileset.tiles[0].type
+                entrance = jsonTileset.tiles[0].entrance,
+                exit = jsonTileset.tiles[0].exit
             };
-            t2 = new Tileset(g, new Vector2(1, 0));
+            t2 = new Tileset(g, new Vector2(2, 1));
             t2.jsonObj = new Tile
             {
                 layout = jsonTileset.tiles[1].layout,
-                type = jsonTileset.tiles[1].type
+                entrance = jsonTileset.tiles[1].entrance,
+                exit = jsonTileset.tiles[1].exit
             };
 
             t3 = new Tileset(g, new Vector2(1, 1));
             t3.jsonObj = new Tile
             {
                 layout = jsonTileset.tiles[2].layout,
-                type = jsonTileset.tiles[2].type
+                entrance = jsonTileset.tiles[2].entrance,
+                exit = jsonTileset.tiles[2].exit
             };
             t4 = new Tileset(g, new Vector2(0, 1));
             t4.jsonObj = new Tile
             {
-                layout = jsonTileset.tiles[2].layout,
-                type = jsonTileset.tiles[2].type
+                layout = jsonTileset.tiles[3].layout,
+                entrance = jsonTileset.tiles[3].entrance,
+                exit = jsonTileset.tiles[3].exit
             };
             _name = "Second Level";
         }
@@ -92,7 +96,7 @@ namespace Evals2Prototype.Scenes
         }
         public override void Update(GameTime gameTime)
         {
-            if(testPlayer.deaths == 3)
+            if(testPlayer.deaths >= testPlayer.enemies.Count)
             {
                 active = false;
                 gotoMenu = true;
@@ -104,7 +108,7 @@ namespace Evals2Prototype.Scenes
         {
             bounds = new Rectangle(0, 0, 5000, 5000);
             background = content.Backgrounds[1];
-            bgm = content.Songs[0];
+            bgm = content.Songs[1];
             List<Enemy> enemies = new List<Enemy>();
             List<Wall> floor = new List<Wall>();
             walltx = content.Wall;
@@ -162,7 +166,7 @@ namespace Evals2Prototype.Scenes
                 Components.Add(e);
             }
 
-            testPlayer = new Player(game, new Vector2(608, 300), debugBox, new Vector2(46, 48), 4, content.Player, _sf);
+            testPlayer = new Player(game, new Vector2(800*2, 300), debugBox, new Vector2(46, 48), 4, content.Player, _sf);
             testPlayer.floors = floor;
             testPlayer.enemies = enemies;
             this.Components.Add(testPlayer);

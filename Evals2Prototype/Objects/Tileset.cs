@@ -38,10 +38,10 @@ namespace Evals2Prototype.Objects
                     switch(jsonObj.layout[i][j])
                     {
                         case 1:
-                            floor.Add(new Wall(game, wallTX, new Vector2((64 * j) + (setPosition.X * 1536), (64 * i) + (setPosition.Y * 960)), debugBox, new Vector2(64, 64), 1));
+                            floor.Add(new Wall(game, wallTX, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), debugBox, new Vector2(64, 64), 1));
                             break;
                         case 2:
-                            enemies.Add(new Enemy(game,enemyTX, new Vector2((64 * j) + (setPosition.X * 1536), (64 * i) + (setPosition.Y * 960)), debugBox, new Vector2(64, 64),1,floor, 1));
+                            enemies.Add(new Enemy(game,enemyTX, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), debugBox, new Vector2(64, 64),1,floor, 1));
                             break;
                     }
 
@@ -51,9 +51,11 @@ namespace Evals2Prototype.Objects
 
     }
 
+
     public class Tile
     {
-        public string type;
+        public string entrance;
+        public string exit;
         public int[][] layout;
     }
 

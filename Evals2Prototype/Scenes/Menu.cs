@@ -23,8 +23,8 @@ namespace Evals2Prototype.Scenes
         Rectangle bounds;
         public bool selectionMade;
 
-        int[] menuOptions = new int[3];
-        string[] menu = { "Scene 1", "Scene 2", "Exit" };
+        int[] menuOptions = new int[2];
+        string[] menu = { "Play", "Exit" };
         public int selection = 0;
 
         public Menu(Game g) :base(g)
@@ -68,10 +68,7 @@ namespace Evals2Prototype.Scenes
             {
                 selection = 1;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad3))
-            {
-                selection = 2;
-            }
+
 
             if (selection >= menuOptions.Length)
             {

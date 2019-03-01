@@ -91,23 +91,6 @@ namespace Evals2Prototype.Objects
 
         }
 
-        //public bool Collision(AnimatedSprite other)
-        //{
-        //    BoundingBox = new Rectangle((int)this.Position.X, (int)this.Position.Y, 64, 64);
-        //    Rectangle OtherBox = new Rectangle((int)other.Position.X, (int)other.Position.Y, other.Image.Width, other.Image.Height);
-        //    if (BoundingBox.Intersects(OtherBox))
-        //    {
-        //        InCollision = Color.Green;
-        //        collidingWith = other;
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        InCollision = Color.White;
-        //        collidingWith = null;
-        //        return false;
-        //    }
-        //}
 
         public void Move(Vector2 movement)
         {

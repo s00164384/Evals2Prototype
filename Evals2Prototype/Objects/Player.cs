@@ -302,27 +302,6 @@ namespace Evals2Prototype.Objects
                 }
             }
 
-            //foreach (Door d in doors)
-            //{
-            //    if (BoundingBox.Intersects(d.BoundingBox))
-            //    {
-            //        _guide.Visible = true;
-            //        _guide.Position = d.DoorLeft;
-            //        _guide._destination = d.DoorRight;
-            //        _guide._dir = "right";
-            //        this.Visible = false;
-            //        movement = Vector2.Zero;
-            //    }
-            //    else if (BoundingBox.Intersects(d.BoundingBox2))
-            //    {
-            //        _guide.Visible = true;
-            //        _guide.Position = d.DoorRight;
-            //        _guide._destination = d.DoorLeft;
-            //        _guide._dir = "left";
-            //        this.Visible = false;
-            //        movement = Vector2.Zero;
-            //    }
-            //}
 
 
         }
@@ -346,7 +325,7 @@ namespace Evals2Prototype.Objects
             Sb.DrawString(HUDtxt, "Y: " + Position.Y, new Vector2(0,37), Color.Red);
             Sb.DrawString(HUDtxt, "MoveX: " + movement.X.ToString(), new Vector2(0, 74), Color.Red);
             Sb.DrawString(HUDtxt, "MoveY: " + movement.Y.ToString(), new Vector2(0, 110), Color.Red);
-            Sb.DrawString(HUDtxt, "movestate: " + _moveState, new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth/2,147), Color.Red);
+            Sb.DrawString(HUDtxt, "Kills: " + deaths + " / " + enemies.Count, new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth/2,147), Color.Red);
             Sb.End();
 
             weapon.Draw(gameTime);
