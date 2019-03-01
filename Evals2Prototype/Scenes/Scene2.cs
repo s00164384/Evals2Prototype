@@ -37,10 +37,10 @@ namespace Evals2Prototype.Scenes
             {
                 layout[i] = new string[4];
             }
-            if (File.Exists("test.json"))
+            if (File.Exists("././test.json"))
             {
                 {
-                    using (StreamReader sr = new StreamReader("test.json"))
+                    using (StreamReader sr = new StreamReader("././test.json"))
                     {
                         json = sr.ReadToEnd();
                         jsonTileset = JsonConvert.DeserializeObject<Tiles>(json);

@@ -38,7 +38,7 @@ namespace Evals2Prototype.Objects
         {
             content = new Assets
             {
-                Player = new Texture2D[] { game.Content.Load<Texture2D>("Sprites/evals"), game.Content.Load<Texture2D>("Sprites/evalsRight"), game.Content.Load<Texture2D>("Sprites/evalsJump"), game.Content.Load<Texture2D>("Sprites/evalsFall"), game.Content.Load<Texture2D>("Sprites/dagger"),game.Content.Load<Texture2D>("Sprites/EvalsAtt")},
+                Player = new Texture2D[] { game.Content.Load<Texture2D>("Sprites/evals"), game.Content.Load<Texture2D>("Sprites/evalsRight"), game.Content.Load<Texture2D>("Sprites/evalsJump"), game.Content.Load<Texture2D>("Sprites/evalsFall"), game.Content.Load<Texture2D>("Sprites/dagger"),game.Content.Load<Texture2D>("Sprites/EvalsAtt"), game.Content.Load<Texture2D>("Sprites/projectile") },
                 Enemy = game.Content.Load<Texture2D>("Sprites/Enemy"),
                 Wall = game.Content.Load<Texture2D>("Sprites/Scene2/Wall"),
                 DebugBox = game.Content.Load<Texture2D>("Sprites/hitbox"),

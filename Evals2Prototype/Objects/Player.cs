@@ -20,6 +20,7 @@ namespace Evals2Prototype.Objects
         bool grounded;
         float gravity = 0f;
         Weapon weapon;
+        Gun gun;
         
         Vector2 oldPosition;
         SpriteFont HUDtxt;
@@ -45,9 +46,10 @@ namespace Evals2Prototype.Objects
             _States = states;
             originPoint = pos;
             HUDtxt = sf;
-
+            _dir = "right";
             weapon = new Weapon(g, states[4], new Vector2(pos.X, pos.Y + dimen.Y/2 - 7),"sword",bounds,new Vector2(68,6),5);
-            
+            gun = new Gun(g, states[5], new Vector2(0,0), "gun", bounds, new Vector2(1,1), 1);
+
         }
 
         public override void Update(GameTime gameTime)
@@ -67,8 +69,20 @@ namespace Evals2Prototype.Objects
                 _moveState = (int)_moveStates.ATTACK;
                 Image = _States[5];
             }
+            if(Keyboard.GetState().IsKeyDown(Keys.B) && gun.projectiles.Count < 5)
+            {
+                if (_dir == "right")
+                    gun.projectiles.Add(new Projectile(game, _States[6], this.Position, "bullet", boundtx, new Vector2(8, 8), 1, 5, 1));
+                else
+                    gun.projectiles.Add(new Projectile(game, _States[6], this.Position, "bullet", boundtx, new Vector2(8, 8), 1, 5, -1));
+            }
             weapon._dir = _dir;
             weapon.Update(gameTime);
+            gun.Update(gameTime);
+            foreach(Projectile p in gun.projectiles)
+            {
+                p.Update(gameTime);
+            }
 
 
 
@@ -181,9 +195,15 @@ namespace Evals2Prototype.Objects
             }
 
             if (_dir == "right")
+            {
                 weapon.Position = new Vector2(this.Position.X, this.Position.Y + Dimensions.Y / 2);
+                gun.Position = new Vector2(this.Position.X, this.Position.Y + Dimensions.Y / 2);
+            }
             if (_dir == "left")
+            {
                 weapon.Position = new Vector2(this.Position.X - 24, this.Position.Y + Dimensions.Y / 2);
+                gun.Position = new Vector2(this.Position.X, this.Position.Y + Dimensions.Y / 2);
+            }
         }
         void Collisions()
         {
@@ -301,6 +321,7 @@ namespace Evals2Prototype.Objects
                     i--;
                     return;
                 }
+             
 
                 if (BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
                 {
@@ -336,6 +357,7 @@ namespace Evals2Prototype.Objects
             Sb.End();
 
             weapon.Draw(gameTime);
+            gun.Draw(gameTime);
 
             base.Draw(gameTime);
         }
