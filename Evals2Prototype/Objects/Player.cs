@@ -299,6 +299,13 @@ namespace Evals2Prototype.Objects
                     deaths++;
                     enemies.RemoveAt(i);
                     i--;
+                    return;
+                }
+
+                if (BoundingBox.Intersects(e.BoundingBox) && e.tag == "enemy")
+                {
+                    movement = Vector2.Zero;
+                    Position = originPoint;
                 }
             }
 

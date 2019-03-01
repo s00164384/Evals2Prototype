@@ -27,11 +27,16 @@ namespace Evals2Prototype.Scenes
         string json;
         Texture2D background;
         Player testPlayer;
+        string[][] layout = new string[4][];
+    
 
 
-        public Scene2(Game g) : base(g)
+    public Scene2(Game g) : base(g)
         {
- 
+            for (int i = 0; i < layout.Length; i++)
+            {
+                layout[i] = new string[4];
+            }
             if (File.Exists("test.json"))
             {
                 {
@@ -43,7 +48,7 @@ namespace Evals2Prototype.Scenes
                     }
                 }
             }
-
+            CreateRoom();
 
             t = new Tileset(g, new Vector2(2, 0));
             t.jsonObj = new Tile
@@ -75,33 +80,6 @@ namespace Evals2Prototype.Scenes
                 exit = jsonTileset.tiles[3].exit
             };
             _name = "Second Level";
-        }
-
-        protected override void LoadContent()
-        {
-       
-            base.LoadContent();
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            if (!active) return;
-            SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            if (Sb == null) return;
-            Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
-            Sb.Draw(background, bounds, Color.White);
-            Sb.DrawString(_sf,json, new Vector2(0,0), Color.White);
-            Sb.End();
-            base.Draw(gameTime);
-        }
-        public override void Update(GameTime gameTime)
-        {
-            if(testPlayer.deaths >= testPlayer.enemies.Count)
-            {
-                active = false;
-                gotoMenu = true;
-            }
-            base.Update(gameTime);
         }
 
         public override void SetupRoom(Assets content)
@@ -166,10 +144,93 @@ namespace Evals2Prototype.Scenes
                 Components.Add(e);
             }
 
-            testPlayer = new Player(game, new Vector2(800*2, 300), debugBox, new Vector2(46, 48), 4, content.Player, _sf);
+            testPlayer = new Player(game, new Vector2(800 * 2, 300), debugBox, new Vector2(46, 48), 4, content.Player, _sf);
             testPlayer.floors = floor;
             testPlayer.enemies = enemies;
             this.Components.Add(testPlayer);
         }
+
+        void CreateRoom()
+        {
+            Random r = new Random();
+            Vector2 location;
+
+
+            int start = r.Next(0, 4);
+            layout[0][start] = "start";
+            location = new Vector2(start, 0);
+            int next = r.Next(0, 6);
+            while(next != 5 && location.Y != 3)
+            {
+                if(next == 1 || next ==2)
+                {
+                    if ((int)location.X - 1 < 0)
+                        next = 5;
+                }
+                if (next == 3|| next == 4)
+                {
+                    if ((int)location.X + 1 > 3)
+                        next = 5;
+                }
+                switch (next)
+                {
+                    case 1:
+                    case 2:
+                        layout[(int)location.Y][(int)location.X] = "left";
+                        location.X -= 1;
+                        break;
+                    case 3:
+                    case 4:
+                        layout[(int)location.Y][(int)location.X] = "right";
+                        location.X += 1;
+                        break;
+                    case 5:
+                        layout[(int)location.Y][(int)location.X] = "down";
+                        location.Y += 1;
+                        break;
+                }
+                next = r.Next(0, 6);
+            }
+
+
+        }
+
+
+
+
+
+        public override void Update(GameTime gameTime)
+        {
+            if(testPlayer.deaths >= testPlayer.enemies.Count)
+            {
+                active = false;
+                gotoMenu = true;
+            }
+            base.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            if (!active) return;
+            SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+            if (Sb == null) return;
+            Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
+            Sb.Draw(background, bounds, Color.White);
+  
+            Sb.End();
+            Sb.Begin();
+            for (int i = 0; i < layout.Length; i++)
+            {
+                for (int j = 0; j < layout[i].Length; j++)
+                {
+                    if(layout[i][j] != null)
+                    Sb.DrawString(_sf, layout[i][j], new Vector2(108 * j + 64, 40 * i), Color.Beige);
+                }
+            }
+            Sb.End();
+            base.Draw(gameTime);
+        }
+
+   
     }
 }
