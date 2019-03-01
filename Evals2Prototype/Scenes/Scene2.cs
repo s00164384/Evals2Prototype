@@ -35,7 +35,7 @@ namespace Evals2Prototype.Scenes
         {
             for (int i = 0; i < layout.Length; i++)
             {
-                layout[i] = new string[4];
+                layout[i] = new string[] { "---", "---", "---", "---" };
             }
             if (File.Exists("././test.json"))
             {
@@ -164,29 +164,29 @@ namespace Evals2Prototype.Scenes
             {
                 if(next == 1 || next ==2)
                 {
-                    if ((int)location.X - 1 < 0)
+                    if ((int)location.X - 1 < 0 || layout[(int)location.Y][(int)location.X-1] == "right")
                         next = 5;
                 }
                 if (next == 3|| next == 4)
                 {
-                    if ((int)location.X + 1 > 3)
+                    if ((int)location.X + 1 > 3 || layout[(int)location.Y][(int)location.X+1] == "left")
                         next = 5;
                 }
                 switch (next)
                 {
                     case 1:
                     case 2:
-                        layout[(int)location.Y][(int)location.X] = "left";
                         location.X -= 1;
+                        layout[(int)location.Y][(int)location.X] = "left";
                         break;
                     case 3:
                     case 4:
-                        layout[(int)location.Y][(int)location.X] = "right";
                         location.X += 1;
+                        layout[(int)location.Y][(int)location.X] = "right";
                         break;
                     case 5:
-                        layout[(int)location.Y][(int)location.X] = "down";
                         location.Y += 1;
+                        layout[(int)location.Y][(int)location.X] = "down";     
                         break;
                 }
                 next = r.Next(0, 6);
@@ -224,7 +224,7 @@ namespace Evals2Prototype.Scenes
                 for (int j = 0; j < layout[i].Length; j++)
                 {
                     if(layout[i][j] != null)
-                    Sb.DrawString(_sf, layout[i][j], new Vector2(108 * j + 64, 40 * i), Color.Beige);
+                    Sb.DrawString(_sf, layout[i][j], new Vector2(108 * j + 64, 40 * i + 500), Color.Beige);
                 }
             }
             Sb.End();
