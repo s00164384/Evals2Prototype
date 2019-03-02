@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Objects\Collectable.cs" />
+    <Compile Include="Objects\InputEngine.cs" />
     <Compile Include="Objects\AnimatedSprite.cs" />
     <Compile Include="Objects\Camera.cs" />
     <Compile Include="Objects\CameraGuide.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Objects\Scene.cs" />
     <Compile Include="Objects\SceneManager.cs" />
     <Compile Include="Objects\Tileset.cs" />
+    <Compile Include="Objects\Utility.cs" />
     <Compile Include="Objects\Wall.cs" />
     <Compile Include="Objects\Weapon.cs" />
     <Compile Include="Program.cs" />

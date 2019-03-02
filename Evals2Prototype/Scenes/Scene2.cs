@@ -23,15 +23,16 @@ namespace Evals2Prototype.Scenes
         SpriteFont _sf;
         Rectangle bounds;
         Tile test;
+
         Tiles jsonTileset;
         string json;
         Texture2D background;
-        Player testPlayer;
         string[][] layout = new string[4][];
-    
+        List<Collectable> collectables = new List<Collectable>();
 
 
-    public Scene2(Game g) : base(g)
+
+        public Scene2(Game g) : base(g)
         {
             for (int i = 0; i < layout.Length; i++)
             {
@@ -50,35 +51,35 @@ namespace Evals2Prototype.Scenes
             }
             CreateRoom();
 
-            t = new Tileset(g, new Vector2(2, 0));
+            t = new Tileset(g, new Vector2(0, 0));
             t.jsonObj = new Tile
             {
                 layout = jsonTileset.tiles[0].layout,
                 entrance = jsonTileset.tiles[0].entrance,
                 exit = jsonTileset.tiles[0].exit
             };
-            t2 = new Tileset(g, new Vector2(2, 1));
-            t2.jsonObj = new Tile
-            {
-                layout = jsonTileset.tiles[1].layout,
-                entrance = jsonTileset.tiles[1].entrance,
-                exit = jsonTileset.tiles[1].exit
-            };
+            //t2 = new Tileset(g, new Vector2(2, 1));
+            //t2.jsonObj = new Tile
+            //{
+            //    layout = jsonTileset.tiles[1].layout,
+            //    entrance = jsonTileset.tiles[1].entrance,
+            //    exit = jsonTileset.tiles[1].exit
+            //};
 
-            t3 = new Tileset(g, new Vector2(1, 1));
-            t3.jsonObj = new Tile
-            {
-                layout = jsonTileset.tiles[2].layout,
-                entrance = jsonTileset.tiles[2].entrance,
-                exit = jsonTileset.tiles[2].exit
-            };
-            t4 = new Tileset(g, new Vector2(0, 1));
-            t4.jsonObj = new Tile
-            {
-                layout = jsonTileset.tiles[3].layout,
-                entrance = jsonTileset.tiles[3].entrance,
-                exit = jsonTileset.tiles[3].exit
-            };
+            //t3 = new Tileset(g, new Vector2(1, 1));
+            //t3.jsonObj = new Tile
+            //{
+            //    layout = jsonTileset.tiles[2].layout,
+            //    entrance = jsonTileset.tiles[2].entrance,
+            //    exit = jsonTileset.tiles[2].exit
+            //};
+            //t4 = new Tileset(g, new Vector2(0, 1));
+            //t4.jsonObj = new Tile
+            //{
+            //    layout = jsonTileset.tiles[3].layout,
+            //    entrance = jsonTileset.tiles[3].entrance,
+            //    exit = jsonTileset.tiles[3].exit
+            //};
             _name = "Second Level";
         }
 
@@ -89,62 +90,84 @@ namespace Evals2Prototype.Scenes
             bgm = content.Songs[1];
             List<Enemy> enemies = new List<Enemy>();
             List<Wall> floor = new List<Wall>();
+
             walltx = content.Wall;
             Texture2D enemytx = content.Enemy;
             Texture2D debugBox = content.DebugBox;
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = content.Font;
 
-            t.SetTiles(walltx, enemytx, debugBox);
-            t2.SetTiles(walltx, enemytx, debugBox);
-            t3.SetTiles(walltx, enemytx, debugBox);
-            t4.SetTiles(walltx, enemytx, debugBox);
+            t.SetTiles(content,ref testPlayer);
+            //t2.SetTiles(walltx, enemytx, debugBox, content.Collectable);
+            //t3.SetTiles(walltx, enemytx, debugBox, content.Collectable);
+            //t4.SetTiles(walltx, enemytx, debugBox, content.Collectable);
             testSprite = content.Backgrounds[0];
 
             foreach (Wall w in t.floor)
             {
+            
                 floor.Add(w);
                 Components.Add(w);
             }
-            foreach (Wall w in t2.floor)
-            {
-                floor.Add(w);
-                Components.Add(w);
-            }
-            foreach (Wall w in t3.floor)
-            {
-                floor.Add(w);
-                Components.Add(w);
-            }
-            foreach (Wall w in t4.floor)
-            {
-                floor.Add(w);
-                Components.Add(w);
-            }
+            //foreach (Wall w in t2.floor)
+            //{
+            //    floor.Add(w);
+            //    Components.Add(w);
+            //}
+            //foreach (Wall w in t3.floor)
+            //{
+            //    floor.Add(w);
+            //    Components.Add(w);
+            //}
+            //foreach (Wall w in t4.floor)
+            //{
+            //    floor.Add(w);
+            //    Components.Add(w);
+            //}
 
             foreach (Enemy e in t.enemies)
             {
                 enemies.Add(e);
                 Components.Add(e);
             }
-            foreach (Enemy e in t2.enemies)
-            {
-                enemies.Add(e);
-                Components.Add(e);
-            }
+            //foreach (Enemy e in t2.enemies)
+            //{
+            //    enemies.Add(e);
+            //    Components.Add(e);
+            //}
 
-            foreach (Enemy e in t3.enemies)
+            //foreach (Enemy e in t3.enemies)
+            //{
+            //    enemies.Add(e);
+            //    Components.Add(e);
+            //}
+            //foreach (Enemy e in t4.enemies)
+            //{
+            //    enemies.Add(e);
+            //    Components.Add(e);
+            //}
+            foreach(Collectable c in t.collectables)
             {
-                enemies.Add(e);
-                Components.Add(e);
+                collectables.Add(c);
+                Components.Add(c);
             }
-            foreach (Enemy e in t4.enemies)
-            {
-                enemies.Add(e);
-                Components.Add(e);
-            }
+            //foreach (Collectable c in t2.collectables)
+            //{
+            //    collectables.Add(c);
+            //    Components.Add(c);
+            //}
+            //foreach (Collectable c in t3.collectables)
+            //{
+            //    collectables.Add(c);
+            //    Components.Add(c);
+            //}
+            //foreach (Collectable c in t4.collectables)
+            //{
+            //    collectables.Add(c);
+            //    Components.Add(c);
+            //}
 
-            testPlayer = new Player(game, new Vector2(800 * 2, 300), debugBox, new Vector2(46, 48), 4, content.Player, _sf);
+           
             testPlayer.floors = floor;
             testPlayer.enemies = enemies;
             this.Components.Add(testPlayer);
@@ -201,10 +224,15 @@ namespace Evals2Prototype.Scenes
 
         public override void Update(GameTime gameTime)
         {
-            if(testPlayer.deaths >= testPlayer.enemies.Count)
+            for(int i = 0;i<collectables.Count;i++)
             {
-                active = false;
-                gotoMenu = true;
+                if(collectables[i].BoundingBox.Intersects(testPlayer.BoundingBox))
+                {
+                    collectables[i].Visible = false;
+                    testPlayer.score += collectables[i].scoreValue;
+                    collectables.RemoveAt(i);
+                    i--;
+                }
             }
             base.Update(gameTime);
         }
@@ -218,16 +246,16 @@ namespace Evals2Prototype.Scenes
             Sb.Draw(background, bounds, Color.White);
   
             Sb.End();
-            Sb.Begin();
-            for (int i = 0; i < layout.Length; i++)
-            {
-                for (int j = 0; j < layout[i].Length; j++)
-                {
-                    if(layout[i][j] != null)
-                    Sb.DrawString(_sf, layout[i][j], new Vector2(108 * j + 64, 40 * i + 500), Color.Beige);
-                }
-            }
-            Sb.End();
+            //Sb.Begin();
+            //for (int i = 0; i < layout.Length; i++)
+            //{
+            //    for (int j = 0; j < layout[i].Length; j++)
+            //    {
+            //        if(layout[i][j] != null)
+            //        Sb.DrawString(_sf, layout[i][j], new Vector2(108 * j + 64, 40 * i + 500), Color.Beige);
+            //    }
+            //}
+            //Sb.End();
             base.Draw(gameTime);
         }
 

@@ -7,6 +7,8 @@ using Evals2Prototype.Objects;
 using Evals2Prototype.Scenes;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Evals2Prototype
 {
@@ -19,6 +21,7 @@ namespace Evals2Prototype
         Scene scene;
         Scene scene2;
         SpriteBatch spriteBatch;
+        SceneManager manager;
 
 
         public Game1()
@@ -45,7 +48,8 @@ namespace Evals2Prototype
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-            SceneManager manager = new SceneManager(this);
+            manager = new SceneManager(this);
+            new InputEngine(this);
 
             // TODO: Add your initialization logic here
 
@@ -70,6 +74,11 @@ namespace Evals2Prototype
         /// </summary>
         protected override void UnloadContent()
         {
+            using (StreamWriter sw = new StreamWriter("leaderboards.json"))
+            {
+                string json = JsonConvert.SerializeObject(manager.jsonScores);
+                sw.Write(json);
+            }
             // TODO: Unload any non ContentManager content here
         }
 

@@ -21,6 +21,7 @@ namespace Evals2Prototype.Scenes
         SpriteFont _sf;
         Song backingTrack;
         Rectangle bounds;
+        Texture2D logo;
         public bool selectionMade;
 
         int[] menuOptions = new int[2];
@@ -30,6 +31,8 @@ namespace Evals2Prototype.Scenes
         public Menu(Game g) :base(g)
         {
             _name = "Menu";
+            bounds = new Rectangle(0,0,5000, 5000);
+  
         }
 
         protected override void LoadContent()
@@ -38,12 +41,13 @@ namespace Evals2Prototype.Scenes
             bgm = game.Content.Load<Song>("Sounds/cloud");
             //MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(bgm);
-       
+            logo = game.Content.Load<Texture2D>("Sprites/logo");
+
             // Create a new SpriteBatch, which can be used to draw textures.
             _sf = game.Content.Load<SpriteFont>("Fonts/Score");
 
 
-            testSprite = game.Content.Load<Texture2D>("Backgrounds/xp");
+            testSprite = game.Content.Load<Texture2D>("Backgrounds/bg2");
             base.LoadContent();
         }
 
@@ -79,7 +83,7 @@ namespace Evals2Prototype.Scenes
                 selection = menuOptions.Length - 1;
             }
 
-            if(Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if(InputEngine.IsKeyPressed(Keys.Enter))
             {
                 selectionMade = true;
             }
@@ -97,6 +101,7 @@ namespace Evals2Prototype.Scenes
             if (Sb == null) return;
             Sb.Begin();
             Sb.Draw(testSprite, bounds, Color.White);
+            Sb.Draw(logo,Vector2.Zero , Color.Red);
             Sb.DrawString(_sf, menu[selection], new Vector2(500, 500), Color.White);
             Sb.End();
             base.Draw(gameTime);

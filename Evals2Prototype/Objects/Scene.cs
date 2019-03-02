@@ -22,6 +22,7 @@ namespace Evals2Prototype.Objects
         public string _name;
         public Song bgm;
         public Texture2D walltx;
+        public Player testPlayer;
 
 
         public Scene(Game g) : base(g)

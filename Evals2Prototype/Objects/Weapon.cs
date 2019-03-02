@@ -36,7 +36,7 @@ namespace Evals2Prototype.Objects
         }
     }
 
-    class Gun  :AnimatedSprite
+    class Gun  : Weapon
     {
         public List<Projectile> projectiles = new List<Projectile>();
         Texture2D prjTx;

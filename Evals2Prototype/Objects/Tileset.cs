@@ -20,6 +20,7 @@ namespace Evals2Prototype.Objects
         Game game;
         public List<Wall> floor = new List<Wall>();
         public List<Enemy> enemies = new List<Enemy>();
+        public List<Collectable> collectables = new List<Collectable>();
         public Tileset(Game g,Vector2 pos): base(g)
         {
             game = g;
@@ -27,7 +28,7 @@ namespace Evals2Prototype.Objects
             jsonObj = new Tile();
         }
 
-        public void SetTiles(Texture2D wallTX,Texture2D enemyTX,Texture2D debugBox)
+        public void SetTiles(Assets content, ref Player testPlayer)
         {      
 
 
@@ -38,10 +39,27 @@ namespace Evals2Prototype.Objects
                     switch(jsonObj.layout[i][j])
                     {
                         case 1:
-                            floor.Add(new Wall(game, wallTX, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), debugBox, new Vector2(64, 64), 1));
+                            floor.Add(new Wall(game, content.Wall, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), content.DebugBox, new Vector2(64, 64), 1));
                             break;
                         case 2:
-                            enemies.Add(new Enemy(game,enemyTX, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), debugBox, new Vector2(64, 64),1,floor, 1));
+                            int x = Utility.NextRandom(1, 6);
+                            switch(x)
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                    enemies.Add(new Enemy(game, content.Enemy, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), content.DebugBox, new Vector2(64, 64), 1, floor, 1));
+                                    break;
+                                case 4:
+                                case 5:
+                                    collectables.Add(new Collectable(game, content.Collectable, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)),content.DebugBox,new Vector2(64,64),32,200));
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            testPlayer = new Player(game, new Vector2((64 * j) + (setPosition.X * 768), (64 * i) + (setPosition.Y * 512)), content.DebugBox, new Vector2(46, 48), 4, content.Player,content.Font);
                             break;
                     }
 

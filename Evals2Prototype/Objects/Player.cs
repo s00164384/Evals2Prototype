@@ -21,7 +21,8 @@ namespace Evals2Prototype.Objects
         float gravity = 0f;
         Weapon weapon;
         Gun gun;
-        
+        public int score;
+
         Vector2 oldPosition;
         SpriteFont HUDtxt;
         public int deaths = 0;
@@ -62,19 +63,19 @@ namespace Evals2Prototype.Objects
             weapon.Move(movement);
             this.Move(movement);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !weapon.Active)
+            if (InputEngine.IsKeyHeld(Keys.Space) && !weapon.Active)
             {
                 weapon.Active = true;
                 Frames = 4;
                 _moveState = (int)_moveStates.ATTACK;
                 Image = _States[5];
             }
-            if(Keyboard.GetState().IsKeyDown(Keys.B) && gun.projectiles.Count < 5)
+            if(InputEngine.IsKeyPressed(Keys.B) && gun.projectiles.Count < 5)
             {
                 if (_dir == "right")
-                    gun.projectiles.Add(new Projectile(game, _States[6], this.Position, "bullet", boundtx, new Vector2(8, 8), 1, 5, 1));
+                    gun.projectiles.Add(new Projectile(game, _States[6], new Vector2(Position.X + Dimensions.X/2,Position.Y + Dimensions.Y/3), "bullet", boundtx, new Vector2(8, 8), 1, 5, 1));
                 else
-                    gun.projectiles.Add(new Projectile(game, _States[6], this.Position, "bullet", boundtx, new Vector2(8, 8), 1, 5, -1));
+                    gun.projectiles.Add(new Projectile(game, _States[6], new Vector2(Position.X + Dimensions.X / 2, Position.Y + Dimensions.Y / 3), "bullet", boundtx, new Vector2(8, 8), 1, 5, -1));
             }
             weapon._dir = _dir;
             weapon.Update(gameTime);
@@ -109,7 +110,7 @@ namespace Evals2Prototype.Objects
                 gravity = 0f;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (InputEngine.IsKeyHeld(Keys.Left))
             {
                 movement.X += -1;
                 if (movement.X > 0)
@@ -119,7 +120,7 @@ namespace Evals2Prototype.Objects
                 if (grounded)
                     _moveState = (int)_moveStates.LEFT;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (InputEngine.IsKeyHeld(Keys.Right))
             {
                 movement.X += 1;
                 if (movement.X < 0)
@@ -129,7 +130,7 @@ namespace Evals2Prototype.Objects
                 if (grounded)
                     _moveState = (int)_moveStates.RIGHT;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && grounded)
+            if (InputEngine.IsKeyHeld(Keys.Up) && grounded)
             {
                 movement.Y -= 20;
                 grounded = false;
@@ -349,11 +350,11 @@ namespace Evals2Prototype.Objects
             //Sb.Draw(boundtx, BoundingBoxTop, InCollision);
             Sb.End();
             Sb.Begin();
-            Sb.DrawString(HUDtxt, "X: " + Position.X, Vector2.Zero, Color.Red);
-            Sb.DrawString(HUDtxt, "Y: " + Position.Y, new Vector2(0,37), Color.Red);
-            Sb.DrawString(HUDtxt, "MoveX: " + movement.X.ToString(), new Vector2(0, 74), Color.Red);
-            Sb.DrawString(HUDtxt, "MoveY: " + movement.Y.ToString(), new Vector2(0, 110), Color.Red);
-            Sb.DrawString(HUDtxt, "Kills: " + deaths + " / " + enemies.Count, new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth/2,147), Color.Red);
+            //Sb.DrawString(HUDtxt, "X: " + Position.X, Vector2.Zero, Color.Red);
+            //Sb.DrawString(HUDtxt, "Y: " + Position.Y, new Vector2(0,37), Color.Red);
+            //Sb.DrawString(HUDtxt, "MoveX: " + movement.X.ToString(), new Vector2(0, 74), Color.Red);
+            //Sb.DrawString(HUDtxt, "MoveY: " + movement.Y.ToString(), new Vector2(0, 110), Color.Red);
+            Sb.DrawString(HUDtxt, "Score: " + score, new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth/2,50), Color.Red);
             Sb.End();
 
             weapon.Draw(gameTime);
