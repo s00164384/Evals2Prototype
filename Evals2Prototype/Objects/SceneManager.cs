@@ -113,16 +113,16 @@ namespace Evals2Prototype.Objects
             }
             //activeScene.Update(gameTime);
             if(activeScene.testPlayer != null)
-            if(activeScene.testPlayer.enemies.Count <= 0)
+            if(activeScene.testPlayer.enemies.Count <= 0 || InputEngine.IsKeyPressed(Keys.Y))
             {
                 victory = true;
                 activeScene.active = false;
-                    if (!newScore)
-                    {
-                        scores.Add(activeScene.testPlayer.score, DateTime.Now.ToLongDateString());
-                        jsonScores.scoresList.Add(new Score { time = DateTime.Now.ToShortTimeString(), value = activeScene.testPlayer.score });
-                        newScore = true;
-                    }
+                    //if (!newScore)
+                    //{
+                    //    scores.Add(activeScene.testPlayer.score, DateTime.Now.ToLongDateString());
+                    //    jsonScores.scoresList.Add(new Score { time = DateTime.Now.ToShortTimeString(), value = activeScene.testPlayer.score });
+                    //    newScore = true;
+                    //}
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && activeScene._name != "Menu" && !Paused)
@@ -151,10 +151,7 @@ namespace Evals2Prototype.Objects
                 }
 
             }
-            //if (Keyboard.GetState().IsKeyDown(Keys.R) && activeScene._name != "First Level")
-            //{
 
-            //}
             c.scene = activeScene;
 
             base.Update(gameTime);
@@ -165,20 +162,23 @@ namespace Evals2Prototype.Objects
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin();
-            //Sb.Draw(content.Backgrounds[0], new Rectangle(0, 0, 2000, 2000), Color.White);
+            Sb.Draw(content.Backgrounds[1],Game.GraphicsDevice.Viewport.Bounds, Color.White);
             if(victory)
             {
                 Vector2 size = content.Font.MeasureString("You slayed 'em all!");
-                Sb.DrawString(content.Font, "You slayed 'em all!", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size.X/2, 200), Color.White);
-                Sb.DrawString(content.Font, "Press Enter To Return to the menu", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 -  300, 300), Color.White);
+                Sb.DrawString(content.Font, "You slayed 'em all!", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size.X/2, 0+Game.GraphicsDevice.Viewport.Height/6), Color.White);
                 size = content.Font.MeasureString("Press Enter To Return to the menu");
-                Sb.DrawString(content.Font, scores.Count.ToString(), new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size.X/2, 400), Color.White);
+                Sb.DrawString(content.Font, "Press Enter To Return to the menu", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size.X/2, size.Y + Game.GraphicsDevice.Viewport.Height / 6), Color.White);
+                Vector2 size2 = content.Font.MeasureString("Top Scores:");
+                Sb.DrawString(content.Font, "Top Scores:", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size2.X / 2, size2.Y*2 + Game.GraphicsDevice.Viewport.Height / 6), Color.White);
                 var highscores = scores.Keys.Reverse();
                 var names = scores.Values.Reverse();
-                for(int i = 0; i < highscores.Count()-1;i++)
+                for(int i = 0; i < 5;i++)
                 {
-                    Sb.DrawString(content.Font, highscores.ElementAt(i).ToString(), new Vector2(Game.GraphicsDevice.Viewport.Width / 2, 400 + 64 * i), Color.White);
-                    Sb.DrawString(content.Font, names.ElementAt(i).ToString(), new Vector2(Game.GraphicsDevice.Viewport.Width / 3, 400 + 64 * i), Color.White);
+                    size = content.Font.MeasureString(highscores.ElementAt(i).ToString());
+                    Sb.DrawString(content.Font, highscores.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                    size2 = content.Font.MeasureString(names.ElementAt(i).ToString());
+                    Sb.DrawString(content.Font, names.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 3, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
                 }
             }
             Sb.End();

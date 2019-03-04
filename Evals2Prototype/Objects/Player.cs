@@ -29,6 +29,7 @@ namespace Evals2Prototype.Objects
         Vector2 originPoint;
         public List<Wall> floors;
         public List<Enemy> enemies;
+        public int tempScore;
 
 
         Rectangle BoundingBoxBot;
@@ -317,9 +318,10 @@ namespace Evals2Prototype.Objects
                 {
                     movement = Vector2.Zero;
                     e.isDestroyed = true;
-                    deaths++;
+            
                     enemies.RemoveAt(i);
                     i--;
+                    tempScore += 200;
                     return;
                 }
              
@@ -328,6 +330,8 @@ namespace Evals2Prototype.Objects
                 {
                     movement = Vector2.Zero;
                     Position = originPoint;
+                    score -= 200;
+                    deaths++;
                 }
             }
 
@@ -354,7 +358,14 @@ namespace Evals2Prototype.Objects
             //Sb.DrawString(HUDtxt, "Y: " + Position.Y, new Vector2(0,37), Color.Red);
             //Sb.DrawString(HUDtxt, "MoveX: " + movement.X.ToString(), new Vector2(0, 74), Color.Red);
             //Sb.DrawString(HUDtxt, "MoveY: " + movement.Y.ToString(), new Vector2(0, 110), Color.Red);
-            Sb.DrawString(HUDtxt, "Score: " + score, new Vector2(GraphicsDeviceManager.DefaultBackBufferWidth/2,50), Color.Red);
+            Sb.DrawString(HUDtxt, "Score: " + score, new Vector2(64,32), Color.Red);
+            Sb.DrawString(HUDtxt, "Enemies Remaining: " + enemies.Count, new Vector2(64, 64), Color.Red);
+            if(deaths > 0)
+            {
+                Vector2 size = HUDtxt.MeasureString("Deaths:");
+                Sb.DrawString(HUDtxt, "Deaths:", new Vector2(game.GraphicsDevice.Viewport.Bounds.Width-size.X, game.GraphicsDevice.Viewport.Bounds.Height - size.Y - 64 ), Color.Red);
+                Sb.DrawString(HUDtxt, deaths.ToString(), new Vector2(game.GraphicsDevice.Viewport.Bounds.Width - size.X + size.X / 2, game.GraphicsDevice.Viewport.Bounds.Height - size.Y),Color.Red);
+            }
             Sb.End();
 
             weapon.Draw(gameTime);

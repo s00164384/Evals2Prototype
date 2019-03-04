@@ -229,11 +229,18 @@ namespace Evals2Prototype.Scenes
                 if(collectables[i].BoundingBox.Intersects(testPlayer.BoundingBox))
                 {
                     collectables[i].Visible = false;
-                    testPlayer.score += collectables[i].scoreValue;
+                    testPlayer.tempScore += collectables[i].scoreValue;
                     collectables.RemoveAt(i);
                     i--;
                 }
             }
+
+            if(testPlayer.tempScore > 0)
+            {
+                testPlayer.score += 5;
+                testPlayer.tempScore -= 5;
+            }
+
             base.Update(gameTime);
         }
 
