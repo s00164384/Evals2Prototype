@@ -71,13 +71,13 @@ namespace Evals2Prototype.Objects
                 _moveState = (int)_moveStates.ATTACK;
                 Image = _States[5];
             }
-            if(InputEngine.IsKeyPressed(Keys.B) && gun.projectiles.Count < 5)
-            {
-                if (_dir == "right")
-                    gun.projectiles.Add(new Projectile(game, _States[6], new Vector2(Position.X + Dimensions.X/2,Position.Y + Dimensions.Y/3), "bullet", boundtx, new Vector2(8, 8), 1, 5, 1));
-                else
-                    gun.projectiles.Add(new Projectile(game, _States[6], new Vector2(Position.X + Dimensions.X / 2, Position.Y + Dimensions.Y / 3), "bullet", boundtx, new Vector2(8, 8), 1, 5, -1));
-            }
+            //if(InputEngine.IsKeyPressed(Keys.B) && gun.projectiles.Count < 5)
+            //{
+            //    if (_dir == "right")
+            //        gun.projectiles.Add(new Projectile(game, _States[6], new Vector2(Position.X + Dimensions.X/2,Position.Y + Dimensions.Y/3), "bullet", boundtx, new Vector2(8, 8), 1, 5, 1));
+            //    else
+            //        gun.projectiles.Add(new Projectile(game, _States[6], new Vector2(Position.X + Dimensions.X / 2, Position.Y + Dimensions.Y / 3), "bullet", boundtx, new Vector2(8, 8), 1, 5, -1));
+            //}
             weapon._dir = _dir;
             weapon.Update(gameTime);
             gun.Update(gameTime);
@@ -111,7 +111,7 @@ namespace Evals2Prototype.Objects
                 gravity = 0f;
             }
 
-            if (InputEngine.IsKeyHeld(Keys.Left))
+            if (InputEngine.IsKeyHeld(Keys.Left) || InputEngine.IsKeyHeld(Keys.A))
             {
                 movement.X += -1;
                 if (movement.X > 0)
@@ -121,7 +121,7 @@ namespace Evals2Prototype.Objects
                 if (grounded)
                     _moveState = (int)_moveStates.LEFT;
             }
-            if (InputEngine.IsKeyHeld(Keys.Right))
+            if (InputEngine.IsKeyHeld(Keys.Right) || InputEngine.IsKeyHeld(Keys.D))
             {
                 movement.X += 1;
                 if (movement.X < 0)
@@ -131,7 +131,7 @@ namespace Evals2Prototype.Objects
                 if (grounded)
                     _moveState = (int)_moveStates.RIGHT;
             }
-            if (InputEngine.IsKeyHeld(Keys.Up) && grounded)
+            if ((InputEngine.IsKeyHeld(Keys.Up) || InputEngine.IsKeyHeld(Keys.W)) && grounded)
             {
                 movement.Y -= 20;
                 grounded = false;
@@ -330,7 +330,7 @@ namespace Evals2Prototype.Objects
                 {
                     movement = Vector2.Zero;
                     Position = originPoint;
-                    score -= 200;
+                    score -= 500;
                     deaths++;
                 }
             }
@@ -348,10 +348,13 @@ namespace Evals2Prototype.Objects
             SpriteBatch Sb = game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
-            //Sb.Draw(boundtx, BoundingBoxBot2, InCollision);
-            //Sb.Draw(boundtx, BoundingBoxLeft, InLeft);
-            //Sb.Draw(boundtx, BoundingBoxRight, InRight);
-            //Sb.Draw(boundtx, BoundingBoxTop, InCollision);
+            if (debug)
+            {
+                Sb.Draw(boundtx, BoundingBoxBot2, InCollision);
+                Sb.Draw(boundtx, BoundingBoxLeft, InLeft);
+                Sb.Draw(boundtx, BoundingBoxRight, InRight);
+                Sb.Draw(boundtx, BoundingBoxTop, InCollision);
+            }
             Sb.End();
             Sb.Begin();
             //Sb.DrawString(HUDtxt, "X: " + Position.X, Vector2.Zero, Color.Red);

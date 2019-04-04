@@ -55,20 +55,20 @@ namespace Evals2Prototype.Scenes
         {
             if (!active) return;
             selectionMade = false;
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (InputEngine.IsKeyPressed(Keys.Up))
             {
                 selection--;
             }
-            else if(Keyboard.GetState().IsKeyDown(Keys.Down))
+            else if(InputEngine.IsKeyPressed(Keys.Down))
             {
                 selection++;
             }
 
-            if(Keyboard.GetState().IsKeyDown(Keys.NumPad1))
+            if(InputEngine.IsKeyPressed(Keys.NumPad1))
             {
                 selection = 0;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.NumPad2))
+            if (InputEngine.IsKeyPressed(Keys.NumPad2))
             {
                 selection = 1;
             }
