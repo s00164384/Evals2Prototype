@@ -12,6 +12,8 @@ namespace Evals2Prototype.Objects
     public class AnimatedSprite
     {
         public Texture2D Image;
+
+        public bool debug;
         public Texture2D boundtx;
         public Rectangle BoundingBox;
         public Rectangle source;
@@ -58,6 +60,13 @@ namespace Evals2Prototype.Objects
         {
             oldPosition = Position;
             Frames = Image.Width / (int)Dimensions.X;
+            if(InputEngine.IsKeyPressed(Keys.I))
+            {
+                if (!debug)
+                    debug = true;
+                else
+                    debug = false;
+            }
 
             timer += (float)gameTime.ElapsedGameTime.Milliseconds;
             if(_dir == "left")
@@ -104,7 +113,8 @@ namespace Evals2Prototype.Objects
             if (Sb == null) return;
             Sb.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.CurrentCameraTranslation);
             Sb.Draw(Image,Position, source, Color.White,0f,Vector2.Zero,1.0f,_effect,0f);
-            //Sb.Draw(boundtx, Position, BoundingBox, InCollision, 0f, Vector2.Zero, 1.0f, _effect, 0f);
+            if(debug)
+                Sb.Draw(boundtx, Position, BoundingBox, InCollision, 0f, Vector2.Zero, 1.0f, _effect, 0f);
             Sb.End();
             // TODO: Add your drawing code here
 

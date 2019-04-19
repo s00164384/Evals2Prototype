@@ -113,17 +113,17 @@ namespace Evals2Prototype.Objects
             }
             //activeScene.Update(gameTime);
             if(activeScene.testPlayer != null)
-            if(activeScene.testPlayer.enemies.Count <= 0 || InputEngine.IsKeyPressed(Keys.Y))
+            if(activeScene.testPlayer.enemies.Count <= 0)
             {
                 victory = true;
                 activeScene.active = false;
-                    //if (!newScore)
-                    //{
-                    //    scores.Add(activeScene.testPlayer.score, DateTime.Now.ToLongDateString());
-                    //    jsonScores.scoresList.Add(new Score { time = DateTime.Now.ToShortTimeString(), value = activeScene.testPlayer.score });
-                    //    newScore = true;
-                    //}
-            }
+                    if (!newScore)
+                    {
+                        scores.Add(activeScene.testPlayer.score, DateTime.Now.ToLongTimeString());
+                        jsonScores.scoresList.Add(new Score { time = DateTime.Now.ToLongTimeString(), value = activeScene.testPlayer.score });
+                        newScore = true;
+                    }
+                }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && activeScene._name != "Menu" && !Paused)
             {
@@ -173,7 +173,16 @@ namespace Evals2Prototype.Objects
                 Sb.DrawString(content.Font, "Top Scores:", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size2.X / 2, size2.Y*2 + Game.GraphicsDevice.Viewport.Height / 6), Color.White);
                 var highscores = scores.Keys.Reverse();
                 var names = scores.Values.Reverse();
-                for(int i = 0; i < 5;i++)
+                if(jsonScores.scoresList.Count < 5)
+                for (int i = 0; i < jsonScores.scoresList.Count; i++)
+                {
+                    size = content.Font.MeasureString(highscores.ElementAt(i).ToString());
+                    Sb.DrawString(content.Font, highscores.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                    size2 = content.Font.MeasureString(names.ElementAt(i).ToString());
+                    Sb.DrawString(content.Font, names.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 3, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                }
+                else
+                for (int i = 0; i < 5;i++)
                 {
                     size = content.Font.MeasureString(highscores.ElementAt(i).ToString());
                     Sb.DrawString(content.Font, highscores.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
