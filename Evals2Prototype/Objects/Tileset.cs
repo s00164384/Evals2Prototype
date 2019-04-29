@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace Evals2Prototype.Objects
 {
@@ -15,7 +16,7 @@ namespace Evals2Prototype.Objects
     {
         public enum TileType { wall,ground}
         public int[][] Tiles;
-        public Room[][] Rooms;
+        public Room[][] layout;
         public Tile jsonObj;
         Vector2 setPosition;
         Game game;
@@ -31,13 +32,89 @@ namespace Evals2Prototype.Objects
 
         public void CreateMap()
         {
-            Rooms = new Room[4][];
-            for(int i = 0; i < Rooms.Length;i++)
+            Random r = new Random();
+     
+
+            for (int i = 0; i < layout.Length; i++)
             {
-                Rooms[i] = new Room[4];
+                for (int j = 0; j < layout[i].Length; j++)
+                {
+                    layout[i][j] = new Room { entrance = 0, exit = 0 };
+                }
             }
+            int next = 0;
 
 
+
+            int start = r.Next(0, 4);
+            int end = r.Next(0, 4);
+            bool wall;
+            Vector2 location = new Vector2(start, 0);
+            Vector2 finish = new Vector2(end, 3);
+            layout[(int)location.Y][(int)location.X] = new Room { entrance = 0, exit = 0 };
+            layout[(int)finish.Y][(int)finish.X] = new Room { entrance = 0, exit = 0 };
+            next = r.Next(1, 6);
+            while (!(location == finish) && location.Y < 4)
+            {
+                Vector2 tempLocation = location;
+                wall = false;
+
+
+                switch (next)
+                {
+                    case 1:
+                    case 2:
+                        Debug.WriteLine("moving right");
+                        if (location.X + (int)1 < 4)
+                            if (layout[(int)location.Y][(int)location.X + 1].entrance == 0)
+                            {
+                                layout[(int)location.Y][(int)location.X].exit = 2;
+                                location.X += (int)1;
+                                layout[(int)location.Y][(int)location.X].entrance = 1;
+                            }
+                            else
+                                wall = true;
+                        break;
+                    case 3:
+                    case 4:
+                        Debug.WriteLine("moving left");
+                        if (location.X - (int)1 >= 0)
+                            if (layout[(int)location.Y][(int)location.X - 1].entrance == 0)
+                            {
+                                layout[(int)location.Y][(int)location.X].exit = 1;
+                                location.X -= (int)1;
+                                layout[(int)location.Y][(int)location.X].entrance = 2;
+                            }
+                            else
+                                wall = true;
+                        break;
+                    case 5:
+                        Debug.WriteLine("going down");
+                        if (location.Y + (int)1 < 4)
+                            if (layout[(int)location.Y + 1][(int)location.X].entrance == 0)
+                            {
+                                layout[(int)location.Y][(int)location.X].exit = 3;
+                                location.Y += (int)1;
+                                layout[(int)location.Y][(int)location.X].entrance = 3;
+                            }
+                        break;
+                }
+                Debug.WriteLine("Current coord: ({0},{1})", location.X, location.Y);
+                if (wall)
+                {
+                    if (next != 5)
+                        next = 5;
+
+                }
+                else
+                    next = r.Next(1, 6);
+
+                if(location == finish)
+                {
+                    break;
+                }
+
+            }
 
         }
 

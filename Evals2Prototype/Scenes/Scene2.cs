@@ -27,17 +27,14 @@ namespace Evals2Prototype.Scenes
         Tiles jsonTileset;
         string json;
         Texture2D background;
-        string[][] layout = new string[4][];
+
         List<Collectable> collectables = new List<Collectable>();
 
 
 
         public Scene2(Game g) : base(g)
         {
-            for (int i = 0; i < layout.Length; i++)
-            {
-                layout[i] = new string[] { "---", "---", "---", "---" };
-            }
+            
             if (File.Exists("././test.json"))
             {
                 {
@@ -49,9 +46,15 @@ namespace Evals2Prototype.Scenes
                     }
                 }
             }
-            CreateRoom();
 
             t = new Tileset(g, new Vector2(0, 0));
+            t.layout = new Room[4][];
+            for (int i = 0; i < t.layout.Length; i++)
+            {
+                t.layout[i] = new Room[4];
+            }
+
+            t.CreateMap();
             t.jsonObj = new Tile
             {
                 layout = jsonTileset.tiles[0].layout,
@@ -173,50 +176,50 @@ namespace Evals2Prototype.Scenes
             this.Components.Add(testPlayer);
         }
 
-        void CreateRoom()
-        {
-            Random r = new Random();
-            Vector2 location;
+        //void CreateRoom()
+        //{
+        //    Random r = new Random();
+        //    Vector2 location;
 
 
-            int start = r.Next(0, 4);
-            layout[0][start] = "start";
-            location = new Vector2(start, 0);
-            int next = r.Next(0, 6);
-            while(next != 5 && location.Y != 3)
-            {
-                if(next == 1 || next ==2)
-                {
-                    if ((int)location.X - 1 < 0 || layout[(int)location.Y][(int)location.X-1] == "right")
-                        next = 5;
-                }
-                if (next == 3|| next == 4)
-                {
-                    if ((int)location.X + 1 > 3 || layout[(int)location.Y][(int)location.X+1] == "left")
-                        next = 5;
-                }
-                switch (next)
-                {
-                    case 1:
-                    case 2:
-                        location.X -= 1;
-                        layout[(int)location.Y][(int)location.X] = "left";
-                        break;
-                    case 3:
-                    case 4:
-                        location.X += 1;
-                        layout[(int)location.Y][(int)location.X] = "right";
-                        break;
-                    case 5:
-                        location.Y += 1;
-                        layout[(int)location.Y][(int)location.X] = "down";     
-                        break;
-                }
-                next = r.Next(0, 6);
-            }
+        //    int start = r.Next(0, 4);
+        //    layout[0][start] = "start";
+        //    location = new Vector2(start, 0);
+        //    int next = r.Next(0, 6);
+        //    while(next != 5 && location.Y != 3)
+        //    {
+        //        if(next == 1 || next ==2)
+        //        {
+        //            if ((int)location.X - 1 < 0 || layout[(int)location.Y][(int)location.X-1] == "right")
+        //                next = 5;
+        //        }
+        //        if (next == 3|| next == 4)
+        //        {
+        //            if ((int)location.X + 1 > 3 || layout[(int)location.Y][(int)location.X+1] == "left")
+        //                next = 5;
+        //        }
+        //        switch (next)
+        //        {
+        //            case 1:
+        //            case 2:
+        //                location.X -= 1;
+        //                layout[(int)location.Y][(int)location.X] = "left";
+        //                break;
+        //            case 3:
+        //            case 4:
+        //                location.X += 1;
+        //                layout[(int)location.Y][(int)location.X] = "right";
+        //                break;
+        //            case 5:
+        //                location.Y += 1;
+        //                layout[(int)location.Y][(int)location.X] = "down";     
+        //                break;
+        //        }
+        //        next = r.Next(0, 6);
+        //    }
 
 
-        }
+        //}
 
 
 
