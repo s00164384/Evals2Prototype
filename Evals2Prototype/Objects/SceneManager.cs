@@ -24,7 +24,6 @@ namespace Evals2Prototype.Objects
         Game game;
         string json;
         public Scores jsonScores;
-        public SortedList<int, string> scores = new SortedList<int, string>();
         public Assets content;
         bool Paused,victory,newScore;
 
@@ -39,11 +38,7 @@ namespace Evals2Prototype.Objects
             sceneList = new List<Scene> { new Scene2(g), new Scene2(g) };
             c = new Camera(g, Vector2.Zero, new Vector2(3392, 2368), activeScene);
             LoadLeaderboards();
-
-            foreach (Score sc in jsonScores.scoresList)
-            {
-                scores.Add(sc.value, sc.time);
-            }
+            jsonScores.scoresList.Sort();
 
         }
 
@@ -119,7 +114,6 @@ namespace Evals2Prototype.Objects
                 activeScene.active = false;
                     if (!newScore)
                     {
-                        scores.Add(activeScene.testPlayer.score, DateTime.Now.ToLongTimeString());
                         jsonScores.scoresList.Add(new Score { time = DateTime.Now.ToLongTimeString(), value = activeScene.testPlayer.score });
                         newScore = true;
                     }
@@ -171,23 +165,22 @@ namespace Evals2Prototype.Objects
                 Sb.DrawString(content.Font, "Press Enter To Return to the menu", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size.X/2, size.Y + Game.GraphicsDevice.Viewport.Height / 6), Color.White);
                 Vector2 size2 = content.Font.MeasureString("Top Scores:");
                 Sb.DrawString(content.Font, "Top Scores:", new Vector2(Game.GraphicsDevice.Viewport.Width / 2 - size2.X / 2, size2.Y*2 + Game.GraphicsDevice.Viewport.Height / 6), Color.White);
-                var highscores = scores.Keys.Reverse();
-                var names = scores.Values.Reverse();
+
                 if(jsonScores.scoresList.Count < 5)
                 for (int i = 0; i < jsonScores.scoresList.Count; i++)
                 {
-                    size = content.Font.MeasureString(highscores.ElementAt(i).ToString());
-                    Sb.DrawString(content.Font, highscores.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
-                    size2 = content.Font.MeasureString(names.ElementAt(i).ToString());
-                    Sb.DrawString(content.Font, names.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 3, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                    size = content.Font.MeasureString(jsonScores.scoresList.ElementAt(i).time.ToString());
+                    Sb.DrawString(content.Font, jsonScores.scoresList.ElementAt(i).time.ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                    size2 = content.Font.MeasureString(jsonScores.scoresList.ElementAt(i).value.ToString());
+                    Sb.DrawString(content.Font, jsonScores.scoresList.ElementAt(i).value.ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 3, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
                 }
                 else
                 for (int i = 0; i < 5;i++)
                 {
-                    size = content.Font.MeasureString(highscores.ElementAt(i).ToString());
-                    Sb.DrawString(content.Font, highscores.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
-                    size2 = content.Font.MeasureString(names.ElementAt(i).ToString());
-                    Sb.DrawString(content.Font, names.ElementAt(i).ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 3, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                    size = content.Font.MeasureString(jsonScores.scoresList.ElementAt(i).time.ToString());
+                    Sb.DrawString(content.Font, jsonScores.scoresList.ElementAt(i).time.ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 5, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
+                    size2 = content.Font.MeasureString(jsonScores.scoresList.ElementAt(i).value.ToString());
+                    Sb.DrawString(content.Font, jsonScores.scoresList.ElementAt(i).value.ToString(), new Vector2((Game.GraphicsDevice.Viewport.Width / 8) * 3, Game.GraphicsDevice.Viewport.Height / 2 + 64 * i), Color.White);
                 }
             }
             Sb.End();
@@ -232,10 +225,20 @@ namespace Evals2Prototype.Objects
 
         }
     }
-    public class Score
+    public class Score : IComparable
     {
         public int value;
         public string time;
+
+        public int CompareTo(object sc)
+        {
+            if (sc == null) return 1;
+
+            Score temp = sc as Score;
+            if (temp != null)
+                return this.value.CompareTo(temp.value);
+            else return 1;
+        }
     }
 
 

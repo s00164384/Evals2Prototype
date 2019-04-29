@@ -15,6 +15,7 @@ namespace Evals2Prototype.Objects
     {
         public enum TileType { wall,ground}
         public int[][] Tiles;
+        public Room[][] Rooms;
         public Tile jsonObj;
         Vector2 setPosition;
         Game game;
@@ -26,6 +27,18 @@ namespace Evals2Prototype.Objects
             game = g;
            setPosition = pos;
             jsonObj = new Tile();
+        }
+
+        public void CreateMap()
+        {
+            Rooms = new Room[4][];
+            for(int i = 0; i < Rooms.Length;i++)
+            {
+                Rooms[i] = new Room[4];
+            }
+
+
+
         }
 
         public void SetTiles(Assets content, ref Player testPlayer)
@@ -85,5 +98,12 @@ namespace Evals2Prototype.Objects
         {
             tiles = new List<Tile>();
         }
+    }
+
+    public class Room
+    {
+        public int entrance;
+        public int exit;
+
     }
 }
