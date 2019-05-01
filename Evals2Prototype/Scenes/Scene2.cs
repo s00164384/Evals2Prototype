@@ -48,6 +48,7 @@ namespace Evals2Prototype.Scenes
             }
 
             t = new Tileset(g, new Vector2(0, 0));
+            t.fromFile = jsonTileset;
             t.layout = new Room[4][];
             for (int i = 0; i < t.layout.Length; i++)
             {
@@ -55,12 +56,13 @@ namespace Evals2Prototype.Scenes
             }
 
             t.CreateMap();
-            t.jsonObj = new Tile
-            {
-                layout = jsonTileset.tiles[0].layout,
-                entrance = jsonTileset.tiles[0].entrance,
-                exit = jsonTileset.tiles[0].exit
-            };
+            t.createRooms();
+            //t.jsonObj = new Tile
+            //{
+            //    layout = jsonTileset.tiles[0].layout,
+            //    entrance = jsonTileset.tiles[0].entrance,
+            //    exit = jsonTileset.tiles[0].exit
+            //};
             //t2 = new Tileset(g, new Vector2(2, 1));
             //t2.jsonObj = new Tile
             //{
